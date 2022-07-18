@@ -1,9 +1,12 @@
-
+import { Heading } from '@chakra-ui/react'
+// import { Routes, Route } from 'react-router-dom'
 
 function App() {
   return (
     <div>
-      Namaste Duniya
+      <Heading size='xl'>
+        Namaste Duniya
+      </Heading>
     </div>
   );
 }
