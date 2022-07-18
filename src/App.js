@@ -1,14 +1,15 @@
-import { Heading, Text } from '@chakra-ui/react'
-// import { Routes, Route } from 'react-router-dom'
+import {Navbar} from './components';
+import { Routes, Route } from 'react-router-dom'
+import {KIS} from './pages';
 
 function App() {
   return (
-    <div>
-      <Heading size='xl'>
-        Namaste Duniya
-      </Heading>
-      <Text as='p'> I am React</Text>
-    </div>
+    <>
+      <Navbar/>
+      <Routes>
+        <Route path='/kis' element={<KIS/>}/>
+      </Routes>
+    </>
   );
 }
 
