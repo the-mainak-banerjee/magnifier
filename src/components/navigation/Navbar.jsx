@@ -1,4 +1,4 @@
-import { Box, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerOverlay, Flex, Heading, IconButton, Show, Spacer, useColorMode } from '@chakra-ui/react'
+import { Box, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerOverlay, Flex, Heading, IconButton, Spacer, useColorMode } from '@chakra-ui/react'
 import React from 'react'
 import { BsList, BsFillMoonFill, BsSun } from 'react-icons/bs'
 import { useDisclosure } from '@chakra-ui/react'
@@ -15,15 +15,16 @@ export const Navbar = () => {
       <Flex 
         align='center'
       >
-        <Show breakpoint='(max-width: 760px)'>
-            <IconButton 
+       <IconButton 
                 aria-label='Show NavBar'
                 icon={<BsList/>}
-                mr='2'
+                mr='1'
+                pl='2'
                 onClick={onOpen}
                 ref={btnRef}
-            />
-        </Show>
+                display={{lg:'none'}}
+                variant='unstyled'
+        />
         <Heading as='h3'>Magnifier</Heading>
         <Spacer/>
         <IconButton 
@@ -34,13 +35,14 @@ export const Navbar = () => {
             onClick={toggleColorMode}
         />
       </Flex>
-      <Show breakpoint='(max-width: 760px)'>
+      {/* <Show breakpoint='(max-width: 760px)'> */}
         <Drawer
             isOpen={isOpen}
             placement='left'
             onClose={onClose}
             finalFocusRef={btnRef}
             bg='gray.50'
+            display={{sm: 'flex', lg:'none'}}
         >
             <DrawerOverlay />
             <DrawerContent>
@@ -49,11 +51,11 @@ export const Navbar = () => {
 
                 <DrawerBody>
                     <Heading as='h3' my='4'>Magnifier</Heading>
-                    <NavItems/>
+                    <NavItems onClick={onClose}/>
                 </DrawerBody>
             </DrawerContent>
         </Drawer>
-      </Show>
+      {/* </Show> */}
     </Box>
   )
 }

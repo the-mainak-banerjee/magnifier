@@ -1,4 +1,4 @@
-import { Flex, Show } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
 import React from 'react'
 import NavItems from './NavItems'
 
@@ -6,7 +6,7 @@ import NavItems from './NavItems'
 export const Sidebar = () => {
   return (
     <>
-        <Show breakpoint='(min-width: 761px)'>
+        {/* <Show breakpoint='(min-width: 761px)'> */}
             <Flex
                 pos='sticky'
                 w='300px'
@@ -15,10 +15,11 @@ export const Sidebar = () => {
                 px='16'
                 py='5'
                 // borderRight='1px'
+                display={['none', 'none', 'flex']}
             >
                 <NavItems/>
             </Flex>
-        </Show>
+        {/* </Show> */}
     </>
   )
 }

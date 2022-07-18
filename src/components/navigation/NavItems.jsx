@@ -1,4 +1,4 @@
-import { Flex, HStack, Icon, IconButton, Link, Menu, MenuButton, Text, useColorMode } from '@chakra-ui/react'
+import { Flex, HStack, Icon, Link, Menu, MenuButton, Text, useColorMode } from '@chakra-ui/react'
 import React from 'react'
 import { BsFillCaretRightFill, BsListCheck, BsTrophy, BsPencilSquare } from 'react-icons/bs'
 import { RiTimerFlashLine } from 'react-icons/ri'
@@ -8,7 +8,7 @@ import { v4 as uuid} from 'uuid'
 
 
 
-const NavItems = () => {
+const NavItems = ({ onClick }) => {
     const navItems = [
         {
             page: 'KIS',
@@ -77,14 +77,11 @@ const NavItems = () => {
                         to={`/${item.path}`}
                         w='100%'
                         _hover={{textDecor: 'none'}}
+                        
                     >
-                        <MenuButton w='100%'>
+                        <MenuButton w='100%' onClick={onClick}>
                             <HStack>
-                                <IconButton 
-                                    size='xs' 
-                                    icon={item.icon} 
-                                    variant='outline'
-                                    />
+                                {item.icon}
                                 <Text as='p' fontSize='lg'>{item.page}</Text>
                             </HStack>
                         </MenuButton>
