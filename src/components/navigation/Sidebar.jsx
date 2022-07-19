@@ -14,8 +14,9 @@ export const Sidebar = () => {
                 // bg='gray.50'
                 px='16'
                 py='5'
-                // borderRight='1px'
-                display={['none', 'none', 'flex']}
+                borderRight='1px'
+                borderColor='gray.100'
+                display={{base: 'none', lg:'block'}}
             >
                 <NavItems/>
             </Flex>

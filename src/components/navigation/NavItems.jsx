@@ -1,6 +1,6 @@
-import { Flex, HStack, Icon, Link, Menu, MenuButton, Text, useColorMode } from '@chakra-ui/react'
+import { Button, Divider, Flex, HStack, Icon, Link, Menu, MenuButton,  Spacer,  Text, useColorMode } from '@chakra-ui/react'
 import React from 'react'
-import { BsFillCaretRightFill, BsListCheck, BsTrophy, BsPencilSquare } from 'react-icons/bs'
+import { BsChevronDoubleRight, BsListCheck, BsTrophy, BsPencilSquare } from 'react-icons/bs'
 import { RiTimerFlashLine } from 'react-icons/ri'
 import { GiArcheryTarget } from 'react-icons/gi'
 import { NavLink } from 'react-router-dom'
@@ -63,51 +63,55 @@ const NavItems = ({ onClick }) => {
     const activeLinkColor = colorMode === 'light' ? 'teal.500' : 'teal.300'
     
   return (
-    <Flex
-        direction='column'
-        w='100%'
-    >
-        {navItems.map(item => {
-            return(
-                <Menu key={uuid()}>
-                    <Link  
-                        as={NavLink}
-                        py={item.hasChild ? '1' : '2'} 
-                        _activeLink={{color: activeLinkColor}} 
-                        to={`/${item.path}`}
-                        w='100%'
-                        _hover={{textDecor: 'none'}}
-                        
-                    >
-                        <MenuButton w='100%' onClick={onClick}>
-                            <HStack>
-                                {item.icon}
-                                <Text as='p' fontSize='lg'>{item.page}</Text>
-                            </HStack>
-                        </MenuButton>
-                    </Link>
-                    {item.child && item.child?.map(subItem => {
-                        return(
-                            <Link 
-                                key={uuid()} 
-                                as={NavLink}
-                                pl='10'
-                                pb='1' 
-                                _activeLink={{color: activeLinkColor}} 
-                                to={`${item.path}/${subItem.path}`}
-                                w='100%'
-                                _hover={{textDecor: 'none'}}
-                            >
+    <Flex direction='column' justifyContent='space-between' gap='32' w='100%'>
+        <Flex
+            direction='column' 
+        >
+            {navItems.map(item => {
+                return(
+                    <Menu key={uuid()}>
+                        <Link  
+                            as={NavLink}
+                            py={item.hasChild ? '1' : '2'} 
+                            _activeLink={{color: activeLinkColor}} 
+                            to={`/${item.path}`}
+                            w='100%'
+                            _hover={{textDecor: 'none'}}
+                            
+                        >
+                            <MenuButton w='100%' onClick={onClick}>
                                 <HStack>
-                                    <Icon as={BsFillCaretRightFill}/>
-                                    <Text as='p'>{subItem.page}</Text>
+                                    {item.icon}
+                                    <Text as='p' fontSize='lg'>{item.page}</Text>
                                 </HStack>
-                            </Link>
-                        )
-                    })}
-                </Menu>
-            )
-        })} 
+                            </MenuButton>
+                        </Link>
+                        {item.child && item.child?.map(subItem => {
+                            return(
+                                <Link 
+                                    key={uuid()} 
+                                    as={NavLink}
+                                    pl='10'
+                                    pb='1' 
+                                    _activeLink={{color: activeLinkColor}} 
+                                    to={`${item.path}/${subItem.path}`}
+                                    w='100%'
+                                    _hover={{textDecor: 'none'}}
+                                >
+                                    <HStack>
+                                        <Icon as={BsChevronDoubleRight}/>
+                                        <Text as='p'>{subItem.page}</Text>
+                                    </HStack>
+                                </Link>
+                            )
+                        })}
+                        <Divider/>
+                    </Menu>
+                )
+            })} 
+        </Flex>
+        <Spacer/>
+        <Button>Log Out</Button>
     </Flex>
 
   )
