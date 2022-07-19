@@ -60,7 +60,7 @@ const NavItems = ({ onClick }) => {
     ] 
 
     const {colorMode} = useColorMode()
-    const activeLinkColor = colorMode === 'light' ? 'teal.500' : 'teal.300'
+    const activeLinkColor = colorMode === 'light' ? 'green.500' : 'green.300'
     
   return (
     <Flex direction='column' justifyContent='space-between' gap='32' w='100%'>
@@ -111,7 +111,7 @@ const NavItems = ({ onClick }) => {
             })} 
         </Flex>
         <Spacer/>
-        <Button>Log Out</Button>
+        <Button colorScheme='red'>Log Out</Button>
     </Flex>
 
   )
