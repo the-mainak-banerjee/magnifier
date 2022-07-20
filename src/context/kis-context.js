@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useReducer, useState } from "react";
 import { taskReducer } from "../reducers/task-reducer";
 // import { v4 as uuid } from 'uuid'
 
@@ -28,8 +28,9 @@ const initialTask = [
 
 const KisContextProvider = ({ children }) => {
     const [state,dispatch] = useReducer(taskReducer,initialTask)
+    const [kisHistory, setKisHistory] = useState([])
     return(
-        <KisContext.Provider value={{state,dispatch}}>
+        <KisContext.Provider value={{state,dispatch, kisHistory,setKisHistory}}>
             { children }
         </KisContext.Provider>
     )

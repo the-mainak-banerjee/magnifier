@@ -1,11 +1,17 @@
 import { Box, Button, Divider, Flex, Heading, Spacer, Text, useDisclosure } from '@chakra-ui/react'
-import React from 'react'
-import { AddTaskModal, BodyWrapper, Sidebar, TaskContainer } from '../../components'
+import React, { useState } from 'react'
+import { AddTaskModal, BodyWrapper, KisHistory, Sidebar, TaskContainer } from '../../components'
 
 
 
 export const KIS = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()  
+  const [dateValue, onChange] = useState(new Date())
+  const [showKisHistory, setShowKisHistory] = useState(false)
+
+  const handleKisHistoryDisplay = () => {
+    setShowKisHistory(prevData => !prevData)
+  }
 
   return (
     <>
@@ -22,13 +28,19 @@ export const KIS = () => {
               </Flex>
               <Divider/>
               <TaskContainer
-                onOpen={onOpen}
+                openTaskModal={onOpen}
+                dateValue={dateValue}
               />
-              {/* <p>History Section</p> */}
+              <Divider/>
+              {showKisHistory 
+              ? <KisHistory handleKisHistoryDisplay={handleKisHistoryDisplay}/>
+              : <Button onClick={handleKisHistoryDisplay} mt='4'>Show KIS History</Button>}
               <AddTaskModal 
                 isOpen={isOpen}
                 onOpen={onOpen}
                 onClose={onClose}
+                dateValue={dateValue}
+                onChange={onChange}
               />
             </BodyWrapper>
         </Flex>

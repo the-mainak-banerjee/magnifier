@@ -1,9 +1,12 @@
 import { Button, Flex, FormControl, Text, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, VStack, Center, Textarea } from '@chakra-ui/react'
 import React, { useState } from 'react'
+import DatePicker from 'react-date-picker'
 import { useKis } from '../../context/kis-context'
 import { TaskItem } from './TaskItem'
 
-export const AddTaskModal = ({ isOpen, onOpen, onClose }) => {
+
+
+export const AddTaskModal = ({ isOpen, onClose, dateValue, onChange }) => {
     const initialRef = React.useRef(null)
     const [formData, setFormData] = useState('')
     const { state,dispatch } = useKis()
@@ -18,7 +21,8 @@ export const AddTaskModal = ({ isOpen, onOpen, onClose }) => {
         setFormData('')
     }
 
-    // console.log(state)
+   
+    // console.log(dateValue)
     // console.log(formData)
 
   return (
@@ -29,7 +33,7 @@ export const AddTaskModal = ({ isOpen, onOpen, onClose }) => {
         onClose={onClose}
         closeOnOverlayClick={false}
         size='xl'
-        motionPreset='slideInBottom'
+        // motionPreset='slideInBottom'
       >
         <ModalOverlay />
         <ModalContent>
@@ -39,8 +43,9 @@ export const AddTaskModal = ({ isOpen, onOpen, onClose }) => {
             {state?.length<5 
             ? <FormControl isRequired>
               <Flex direction='column'>
-                <Textarea ref={initialRef} placeholder='Read Book' onChange={handleInputChange} value={formData}/>
-                <Button mt='2' onClick={handleFormSubmit} disabled={!formData}>Add Task</Button>
+                <DatePicker onChange={onChange} value={dateValue}/>
+                <Textarea ref={initialRef} placeholder='Read Book' onChange={handleInputChange} value={formData} mt='4' />
+                <Button mt='2' onClick={handleFormSubmit} disabled={!formData || !dateValue}>Add Task</Button>
               </Flex>
             </FormControl>
             :   <Center>
