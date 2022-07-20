@@ -41,6 +41,8 @@ export const taskReducer = (state,action) => {
         case 'DELETE': 
             return state?.filter(item => item.id !== action.payload)
 
+        case 'CLEAR' : return []
+
         default:
             return state
     }
