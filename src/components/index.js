@@ -1,2 +1,7 @@
 export {Navbar} from './navigation/Navbar'
 export {Sidebar} from './navigation/Sidebar'
+export { BodyWrapper } from './body/BodyWrapper'
+export { TaskContainer } from './tasks/TaskContainer'
+export { TaskBox } from './tasks/TaskBox'
+export { TaskItem } from './tasks/TaskItem'
+export { AddTaskModal } from './tasks/AddTaskModal'
