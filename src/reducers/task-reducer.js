@@ -8,11 +8,35 @@ export const taskReducer = (state,action) => {
                 {
                     id: uuid(),
                     name: action.payload,
-                    type: 'KIS',
+                    taskType: 'KIS',
                     completed: false
                 }
             ]
-        
+      
+        case 'ADDPOMO':
+            return[
+                ...state,
+                {
+                    id: action.id,
+                    name: action.name,
+                    taskType: action.taskType,
+                    completed: false,
+                    usedPomodoroNo: 0
+                }
+            ]
+
+        case 'UPDATE':
+            return state?.map(item => {
+                if(item.id === action.id){
+                    return ({
+                        ...item,
+                        usedPomodoroNo: item.usedPomodoroNo + 1
+                    })
+                }else{
+                    return item
+                }
+            })
+
         case 'COMPLETE':
             return state?.map(item => {
                     if(item.id === action.payload){

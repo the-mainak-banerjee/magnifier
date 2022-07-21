@@ -21,9 +21,6 @@ export const AddTaskModal = ({ isOpen, onClose, dateValue, onChange }) => {
         setFormData('')
     }
 
-   
-    // console.log(dateValue)
-    // console.log(formData)
 
   return (
     <>

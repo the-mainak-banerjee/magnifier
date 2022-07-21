@@ -1,29 +1,29 @@
 import { createContext, useContext, useReducer, useState } from "react";
 import { taskReducer } from "../reducers/task-reducer";
-// import { v4 as uuid } from 'uuid'
+import { v4 as uuid } from 'uuid'
 
 
 const KisContext = createContext()
 
 const initialTask = [
-    // {
-    //     id: uuid(),
-    //     name: 'Read Book',
-    //     type: 'KIS',
-    //     completed: false
-    // },
-    // {
-    //     id: uuid(),
-    //     name: 'Complete Code',
-    //     type: 'KIS',
-    //     completed: false
-    // },
-    // {
-    //     id: uuid(),
-    //     name: 'Sleep early',
-    //     type: 'KIS',
-    //     completed: false
-    // },
+    {
+        id: uuid(),
+        name: 'Read Book',
+        taskType: 'KIS',
+        completed: false
+    },
+    {
+        id: uuid(),
+        name: 'Complete Code',
+        taskType: 'KIS',
+        completed: false
+    },
+    {
+        id: uuid(),
+        name: 'Sleep early',
+        taskType: 'KIS',
+        completed: false
+    },
 ]
 
 const KisContextProvider = ({ children }) => {
