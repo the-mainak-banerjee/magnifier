@@ -4,10 +4,13 @@ import { BsCheckLg, BsFillCheckCircleFill, BsFillPenFill, BsFillTrashFill } from
 import { AiFillCloseCircle } from 'react-icons/ai'
 import { FaUndo } from 'react-icons/fa'
 import { useKis } from '../../context/kis-context'
+import { usePomo } from '../../context'
+
 
 
 export const TaskItem = ({ task, pencil, check, idx }) => {
-  const { dispatch } = useKis()
+  const { dispatch: kisDispatch } = useKis()
+  const { allPomodoroTask, pomodoroTask, setPomodoroTask,  dispatch: pomoDispatch} = usePomo()
   const [isEditing,setIsEditing] = useState(false)
   const [editableTask,setEditableTask] = useState('')
   const { colorMode } = useColorMode()
@@ -16,15 +19,33 @@ export const TaskItem = ({ task, pencil, check, idx }) => {
   const completedTaskBgColor = colorMode === 'light' ? 'green.300'  : 'green.600'
 
   const handleDelete = () => {
-    dispatch({ type: 'DELETE' , payload: task?.id})
+      kisDispatch({ type: 'DELETE' , payload: task?.id})
+
+      if(allPomodoroTask.some(item => item.id === task.id)){
+        pomoDispatch({ type: 'DELETE' , payload: task?.id})
+      }  
+
+      if(pomodoroTask?.id === task.id){
+        setPomodoroTask(null)
+      }
+
   }
   
   const handleCompletedtask = () => {
-    dispatch({ type: 'COMPLETE', payload: task?.id})
-  }
+      kisDispatch({ type: 'COMPLETE', payload: task?.id})
+
+      if(allPomodoroTask.some(item => item.id === task.id)){
+        pomoDispatch({ type: 'COMPLETE', payload: task?.id})
+      }
+    }
 
   const handleTaskEdit = () => {
-    dispatch({ type: 'EDIT', id: task?.id, payload: editableTask })
+    kisDispatch({ type: 'EDIT', id: task?.id, payload: editableTask })
+
+    if(allPomodoroTask.some(item => item.id === task.id)){
+      pomoDispatch({ type: 'EDIT', id: task?.id, payload: editableTask })
+    }
+    
     setIsEditing(prevState => !prevState)
   }
 

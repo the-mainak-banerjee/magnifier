@@ -29,6 +29,7 @@ export const TaskContainer = ({ openTaskModal,dateValue }) => {
     }else{
       setKisHistory(prevData => [...prevData, {id: uuid(), date:dateValue, tasks: state }])
       dispatch({type: 'CLEAR'})
+      setShowDateEndDetails(false)
     }
   }
 
