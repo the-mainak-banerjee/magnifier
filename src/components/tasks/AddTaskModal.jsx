@@ -42,7 +42,7 @@ export const AddTaskModal = ({ isOpen, onClose, dateValue, onChange }) => {
               <Flex direction='column'>
                 <DatePicker onChange={onChange} value={dateValue}/>
                 <Textarea ref={initialRef} placeholder='Read Book' onChange={handleInputChange} value={formData} mt='4' />
-                <Button mt='2' onClick={handleFormSubmit} disabled={!formData || !dateValue}>Add Task</Button>
+                <Button colorScheme='green' mt='2' onClick={handleFormSubmit} disabled={!formData || !dateValue}>Add Task</Button>
               </Flex>
             </FormControl>
             :   <Center>

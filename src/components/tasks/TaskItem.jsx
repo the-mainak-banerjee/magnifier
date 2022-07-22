@@ -37,7 +37,12 @@ export const TaskItem = ({ task, pencil, check, idx }) => {
       if(allPomodoroTask.some(item => item.id === task.id)){
         pomoDispatch({ type: 'COMPLETE', payload: task?.id})
       }
-    }
+
+      if(pomodoroTask?.id === task.id){
+        setPomodoroTask(null)
+      }
+  }
+
 
   const handleTaskEdit = () => {
     kisDispatch({ type: 'EDIT', id: task?.id, payload: editableTask })

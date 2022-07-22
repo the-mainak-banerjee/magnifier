@@ -21,16 +21,20 @@ export const taskReducer = (state,action) => {
                     name: action.name,
                     taskType: action.taskType,
                     completed: false,
-                    usedPomodoroNo: 0
+                    usedPomodoroNo: {short:0, medium: 0}
                 }
             ]
 
         case 'UPDATE':
             return state?.map(item => {
                 if(item.id === action.id){
-                    return ({
+                    return (
+                        action.timerType.focus === 1 ? {
                         ...item,
-                        usedPomodoroNo: item.usedPomodoroNo + 1
+                        usedPomodoroNo: {...item.usedPomodoroNo, short: item.usedPomodoroNo.short + 1}
+                    } : {
+                        ...item,
+                        usedPomodoroNo: {...item.usedPomodoroNo, medium: item.usedPomodoroNo.medium + 1}
                     })
                 }else{
                     return item
