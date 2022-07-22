@@ -1,12 +1,13 @@
 import { Button, Container, Flex, VStack, Text, Spacer, ButtonGroup, Divider, useColorMode } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { v4 as uuid } from 'uuid'
-import { useKis } from '../../context/kis-context'
+import { useKis } from '../../context'
 import { TaskBox } from './TaskBox'
 
 export const TaskContainer = ({ openTaskModal,dateValue }) => {
 
   const {state,dispatch, kisHistory, setKisHistory} = useKis()
+
   const [completedTask, setCompletedTask] = useState([])
   const [activeTask, setActiveTask] = useState([])
   const [showDateEndDetails,setShowDateEndDetails] = useState(false)
@@ -32,6 +33,8 @@ export const TaskContainer = ({ openTaskModal,dateValue }) => {
       setShowDateEndDetails(false)
     }
   }
+
+
 
   return (
     <>
@@ -61,7 +64,7 @@ export const TaskContainer = ({ openTaskModal,dateValue }) => {
 
       {state?.length > 0 && !showDateEndDetails && <Container maxW="container.lg" p='0' my='4'>
         <Flex align='center' direction={{base:'column', lg:'row'}} gap='2'>
-          <Text fontSize={{base:'xl', md:'2xl'}}>Compleion Rate: {(completedTask?.length / state?.length) * 100}%</Text>
+          <Text fontSize={{base:'xl', md:'2xl'}}>{`Compleion Rate: ${Math.floor((completedTask?.length / state?.length) * 100)}%`}</Text>
           <Spacer/>
           <ButtonGroup>
             <Button onClick={openTaskModal} colorScheme='blue'>Edit Task</Button>

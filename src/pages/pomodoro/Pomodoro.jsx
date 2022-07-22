@@ -1,5 +1,5 @@
 import { Box, Button, Divider, Flex, Heading, Spacer, Text } from '@chakra-ui/react'
-import React  from 'react'
+import React, { useRef }  from 'react'
 import { Sidebar, BodyWrapper, PomodoroContainer, PomodoroTasks } from '../../components'
 import { usePomo } from '../../context'
 
@@ -7,6 +7,7 @@ import { usePomo } from '../../context'
 export const Pomodoro = () => {
 
   const { focus } = usePomo()
+  const scrollToRef = useRef()
 
   return (
     <>
@@ -22,9 +23,9 @@ export const Pomodoro = () => {
                   <Button colorScheme='gray'>Show Details</Button>
                 </Flex>
                 <Divider/>
-                <PomodoroContainer/>
+                <PomodoroContainer scrollToRef={scrollToRef}/>
                 <Divider/>
-                {focus && <PomodoroTasks/>}
+                {focus && <PomodoroTasks scrollToRef={scrollToRef}/>}
             </BodyWrapper>
         </Flex>
     </>

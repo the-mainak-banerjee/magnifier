@@ -1,13 +1,16 @@
-import { Button, ButtonGroup, Center, Circle, Container, Flex, Heading, Text, useColorMode, VStack } from '@chakra-ui/react'
-import React from 'react'
-import { BsFillCaretRightFill } from 'react-icons/bs'
+import { Button, ButtonGroup, Center, Circle, Container, Flex, Heading, IconButton, Text, useColorMode,  VStack } from '@chakra-ui/react'
+import React, { useCallback, useState } from 'react'
+import { BsFillCaretRightFill, BsFillGearFill } from 'react-icons/bs'
 import { AiFillPauseCircle } from 'react-icons/ai'
 import { FaUndo } from 'react-icons/fa'
-import { usePomo } from '../../context'
+import { useKis, usePomo } from '../../context'
+import { PomodoroSettings } from './PomodoroSettings'
 
-export const PomodoroContainer = () => {
+export const PomodoroContainer = ({ scrollToRef }) => { 
+    const [showSettings,setShowSetings] = useState(false)
     const { colorMode } = useColorMode()
     const { focus,startFocus,shortBreak,startShortBreak, longBreak, startLongBreak, pause,setPause,reset,setReset, pomoSec, pomoMin, pomodoroTask,setPomodoroTask, totalPomo, dispatch: pomoDispatch } = usePomo()
+    const {dispatch : kisDispatch} = useKis()
 
 
     const handleReset = () => {
@@ -26,7 +29,18 @@ export const PomodoroContainer = () => {
     const handleComplete = () => {
         pomoDispatch({ type: 'COMPLETE', payload: pomodoroTask?.id})
         setPomodoroTask(null)
+
+        if(pomodoroTask.taskType === 'KIS'){
+            kisDispatch({ type: 'COMPLETE' , payload: pomodoroTask?.id}) 
+        }
+
+        handleReset()
     }
+
+    const hanleSettingVisibility = useCallback(() => {
+        setShowSetings(prevData => !prevData)
+    },[])
+
 
   return (
     <>
@@ -45,32 +59,39 @@ export const PomodoroContainer = () => {
                     </Button>
                 </ButtonGroup>
             </Flex>
-            {focus && <Center w={{base:'100%', lg:'45%'}} py='2' backdropFilter='invert(10%)' border='2px' borderRadius='xl' borderColor={colorMode === 'light' ? 'blue.300'  : 'blue.600'}>
+            {focus && <Center w={{base:'100%', lg:'40%'}} py='2' backdropFilter='invert(10%)' border='2px' borderRadius='xl' borderColor={colorMode === 'light' ? 'blue.300'  : 'blue.600'}>
                 {pomodoroTask?.name 
                 ? <VStack>
-                    <Text textAlign='center' fontSize='lg'>Focusing On {pomodoroTask?.name}</Text>
+                    <Text textAlign='center' fontSize='lg'>Focusing On:- "{pomodoroTask?.name}"</Text>
                     <Button onClick={handleComplete} size='sm'>Mark As Complete</Button>
                 </VStack>
-                : <Text> Add A Task</Text>
+                : <Text cursor='pointer' onClick={() => scrollToRef.current.scrollIntoView()}>Let's Add A Task</Text>
                 }
             </Center>}
             {!focus && <Center  w={{base:'60%', lg:'45%'}} border='2px' borderRadius='xl' borderColor='gray' py='1'>
                     <Text>Let's Have A Break.</Text>
             </Center>}
             
-            <Circle bg={colorMode === 'light' ? 'blue.300'  : 'blue.600'} h='30vh' w='30vh'>
+            {showSettings 
+            ? <PomodoroSettings hanleSettingVisibility={hanleSettingVisibility}/>
+            : <Circle bg={colorMode === 'light' ? 'blue.300'  : 'blue.600'}  h='45vh' w='45vh' boxShadow='xl'>
                 <Heading as='h3' size={{base:'2xl', md:'3xl'}}>
                     {`${pomoMin} : ${pomoSec}`}
                 </Heading>
-            </Circle>
+            </Circle>}
 
-            {reset && <Button 
-                borderRadius='3xl' 
-                colorScheme='blue' 
-                fontSize='xl' leftIcon={<BsFillCaretRightFill/>}
-                onClick={handleStart}>
-                    {focus ? 'Start To Focus' : 'Start Break'}
-            </Button> }
+            {reset && <Flex gap='3'>
+                <Button 
+                    borderRadius='3xl' 
+                    colorScheme='blue' 
+                    fontSize='xl' leftIcon={<BsFillCaretRightFill/>}
+                    onClick={handleStart}
+                    disabled={showSettings}>
+                        {focus ? 'Start To Focus' : 'Start Break'}
+                </Button>
+                <IconButton disabled={showSettings} onClick={hanleSettingVisibility} colorScheme='green' variant='outline' borderRadius='3xl' icon={<BsFillGearFill/>}/>
+            </Flex>
+            }
             {!reset && <ButtonGroup>
                 <Button 
                     borderRadius='3xl' 
@@ -87,8 +108,7 @@ export const PomodoroContainer = () => {
                         Reset
                 </Button>
             </ButtonGroup>}
-
-            <Heading as='h3' size='lg'>{totalPomo} {totalPomo > 1 ? 'Pomodoros' :'Pomodoro'} Till Now</Heading>
+            <Text fontSize='xl'>Total Pomodoros:- {(totalPomo.short + totalPomo.medium) === 0 && '0' } {totalPomo.short && `25mins: ${totalPomo.short}`} {totalPomo.medium && `, 35mins: ${totalPomo.medium}`}</Text>
         </VStack>
       </Container>
     </>

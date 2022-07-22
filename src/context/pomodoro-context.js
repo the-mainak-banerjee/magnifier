@@ -8,7 +8,7 @@ const PomodoroContext = createContext()
 const PomodoroContextProvider = ( { children }) => {
 
     const [timerType, setTimerType] = useState({
-        focus: 1,
+        focus: 2,
         shortBreak: 1,
         longBreak: 60
     })
@@ -24,6 +24,7 @@ const PomodoroContextProvider = ( { children }) => {
 
     const totalPomoLocal = pomoDataOfTheDayLocal?.pomoNo ?? 0
     const pomoTasksLocal = pomoDataOfTheDayLocal?.pomoTasks ?? []
+    const currentPomoTaskLocal = pomoDataOfTheDayLocal?.currentTask ?? null
 
  
     const [sec,setSec] = useState(0)
@@ -34,7 +35,7 @@ const PomodoroContextProvider = ( { children }) => {
     const [shortBreak,setShortBreak] = useState(false)
     const [longBreak,setLongBreak] = useState(false)
     const [totalPomo, setTotalPomo] = useState(totalPomoLocal)
-    const [pomodoroTask, setPomodoroTask] = useState(null)
+    const [pomodoroTask, setPomodoroTask] = useState(currentPomoTaskLocal)
     const [allPomodoroTask,dispatch] = useReducer(taskReducer,pomoTasksLocal)
 
     
@@ -44,16 +45,17 @@ const PomodoroContextProvider = ( { children }) => {
         localStorage.setItem('magnifierPomoOfDay' , JSON.stringify({
             date: date.getDate(),
             pomoNo: totalPomo,
-            pomoTasks: allPomodoroTask
+            pomoTasks: allPomodoroTask,
+            currentTask: pomodoroTask
         }))
-    },[date,totalPomo,allPomodoroTask])
+    },[date,totalPomo,allPomodoroTask,pomodoroTask])
 
 
     // Change The Total Pomodoro Number Of The day to 0 if date changes
 
     useEffect(() => {
         if(date.getDate() !== pomoDataOfTheDayLocal?.date){
-            setTotalPomo(0)
+            setTotalPomo({short: 0, medium:0})
             dispatch({type: 'CLEAR'})
         }
     },[date,pomoDataOfTheDayLocal]) 
@@ -69,11 +71,17 @@ const PomodoroContextProvider = ( { children }) => {
                         setMin(min-1)
                     }else{
                         if(focus){
-                            setTotalPomo(prevData => prevData + 1)
+                            timerType.focus === 1 ? setTotalPomo(prevData => ({...prevData, short:prevData.short + 1})) : setTotalPomo(prevData => ({...prevData, medium:prevData.medium + 1}))
                             startShortBreak()
                             if(pomodoroTask){
-                                setPomodoroTask(item => ({...item, usedPomodoroNo: item.usedPomodoroNo + 1}))
-                                dispatch({type: 'UPDATE', id:pomodoroTask.id})
+                                timerType.focus === 1 ? setPomodoroTask(item => ({
+                                    ...item,
+                                    usedPomodoroNo: {...item.usedPomodoroNo, short: item.usedPomodoroNo.short + 1}
+                                })) : setPomodoroTask(item => ({
+                                    ...item,
+                                    usedPomodoroNo: {...item.usedPomodoroNo, medium: item.usedPomodoroNo.medium + 1}
+                                }))
+                                dispatch({type: 'UPDATE', id:pomodoroTask.id, timerType: timerType})
                             }
                         }else if(shortBreak){
                             startFocus()
@@ -120,6 +128,7 @@ const PomodoroContextProvider = ( { children }) => {
     const pomoSec = sec < 10 ? `0${sec}` : sec
     const pomoMin = min < 10 ? `0${min}` : min
 
+    // console.log(totalPomo)
 
     return (
         <PomodoroContext.Provider 
