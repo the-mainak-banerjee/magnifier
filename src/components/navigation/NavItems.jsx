@@ -2,7 +2,7 @@ import { Button, Divider, Flex, HStack, Icon, Link, Menu, MenuButton,  Spacer,  
 import React from 'react'
 import { BsChevronDoubleRight, BsListCheck, BsTrophy, BsPencilSquare } from 'react-icons/bs'
 import { RiTimerFlashLine } from 'react-icons/ri'
-import { GiArcheryTarget } from 'react-icons/gi'
+// import { GiArcheryTarget } from 'react-icons/gi'
 import { NavLink } from 'react-router-dom'
 import { v4 as uuid} from 'uuid'
 
@@ -46,14 +46,8 @@ const NavItems = ({ onClick }) => {
             ]
         },
         {
-            page: 'Goals',
-            path: 'goals',
-            hasChild: false,
-            icon: <GiArcheryTarget/>
-        },
-        {
-            page: 'Journal',
-            path: 'journal',
+            page: 'Notes',
+            path: 'notes',
             hasChild: false,
             icon: <BsPencilSquare/>
         },
