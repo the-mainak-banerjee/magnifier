@@ -1,3 +1,6 @@
 export { KIS } from './kis/KIS'
 export { Pomodoro } from './pomodoro/Pomodoro'
 export { Notes } from './notes/Notes'
+export { Archive } from './notes/Archive'
+export { Trash } from './notes/Trash'
+export { Folder } from './notes/Folder'
