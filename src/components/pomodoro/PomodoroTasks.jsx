@@ -6,7 +6,7 @@ import { BsCheckLg,  BsFillPenFill, BsFillTrashFill } from 'react-icons/bs'
 import { FaUndo } from 'react-icons/fa'
 
 
-export const PomodoroTasks = ({ scrollToRef }) => {
+export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
 
     const [formData, setFormData] = useState({
         id: '',
@@ -120,13 +120,14 @@ export const PomodoroTasks = ({ scrollToRef }) => {
     const handleTaskStart = (task) => {
         setPomodoroTask(task)
         setReset(prevState => !prevState)
+        pomoContainerRef.current.scrollToView()
     }
       
 
   return (
     <>
         {(reset || !pomodoroTask?.name) && <Container maxW="container.lg" p='4' my='4' boxShadow='md'>
-            <Flex align='center' direction='column' gap='2' ref={scrollToRef}>
+            <Flex align='center' direction='column' gap='2' ref={addTaskRef}>
                 {isEditing 
                 ? <Input placeholder='Add A Task' value={editableTask.name} onChange={(e) => setEditableTask(prevData => ({...prevData, name:e.target.value}))}/>
                 : <Flex flexDirection='column' alignItems='center' w='full'>    

@@ -7,7 +7,8 @@ import { usePomo } from '../../context'
 export const Pomodoro = () => {
 
   const { focus } = usePomo()
-  const scrollToRef = useRef()
+  const addTaskRef = useRef()
+  const pomoContainerRef = useRef()
 
   return (
     <>
@@ -23,9 +24,9 @@ export const Pomodoro = () => {
                   <Button colorScheme='gray'>Show Details</Button>
                 </Flex>
                 <Divider/>
-                <PomodoroContainer scrollToRef={scrollToRef}/>
+                <PomodoroContainer pomoContainerRef={pomoContainerRef} addTaskRef={addTaskRef}/>
                 <Divider/>
-                {focus && <PomodoroTasks scrollToRef={scrollToRef}/>}
+                {focus && <PomodoroTasks pomoContainerRef={pomoContainerRef} addTaskRef={addTaskRef}/>}
             </BodyWrapper>
         </Flex>
     </>

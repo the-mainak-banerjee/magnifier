@@ -6,7 +6,7 @@ import { FaUndo } from 'react-icons/fa'
 import { useKis, usePomo } from '../../context'
 import { PomodoroSettings } from './PomodoroSettings'
 
-export const PomodoroContainer = ({ scrollToRef }) => { 
+export const PomodoroContainer = ({ pomoContainerRef,addTaskRef }) => { 
     const [showSettings,setShowSetings] = useState(false)
     const { colorMode } = useColorMode()
     const { focus,startFocus,shortBreak,startShortBreak, longBreak, startLongBreak, pause,setPause,reset,setReset, pomoSec, pomoMin, pomodoroTask,setPomodoroTask, totalPomo, dispatch: pomoDispatch } = usePomo()
@@ -59,13 +59,13 @@ export const PomodoroContainer = ({ scrollToRef }) => {
                     </Button>
                 </ButtonGroup>
             </Flex>
-            {focus && <Center w={{base:'100%', lg:'40%'}} py='2' backdropFilter='invert(10%)' border='2px' borderRadius='xl' borderColor={colorMode === 'light' ? 'blue.300'  : 'blue.600'}>
+            {focus && <Center w={{base:'100%', lg:'40%'}} py='2' backdropFilter='invert(10%)' border='2px' borderRadius='xl' borderColor={colorMode === 'light' ? 'blue.300'  : 'blue.600'} ref={pomoContainerRef}>
                 {pomodoroTask?.name 
                 ? <VStack>
                     <Text textAlign='center' fontSize='lg'>Focusing On:- "{pomodoroTask?.name}"</Text>
                     <Button onClick={handleComplete} size='sm'>Mark As Complete</Button>
                 </VStack>
-                : <Text cursor='pointer' onClick={() => scrollToRef.current.scrollIntoView()}>Let's Add A Task</Text>
+                : <Text cursor='pointer' onClick={() => addTaskRef.current.scrollIntoView()}>Let's Add A Task</Text>
                 }
             </Center>}
             {!focus && <Center  w={{base:'60%', lg:'45%'}} border='2px' borderRadius='xl' borderColor='gray' py='1'>
@@ -108,7 +108,7 @@ export const PomodoroContainer = ({ scrollToRef }) => {
                         Reset
                 </Button>
             </ButtonGroup>}
-            <Text fontSize='xl'>Total Pomodoros:- {(totalPomo.short + totalPomo.medium) === 0 && '0' } {totalPomo.short && `25mins: ${totalPomo.short}`} {totalPomo.medium && `, 35mins: ${totalPomo.medium}`}</Text>
+            <Text fontSize='xl'>Total Pomodoros:- { `25mins: ${totalPomo.short}, 35mins: ${totalPomo.medium}`}</Text>
         </VStack>
       </Container>
     </>
