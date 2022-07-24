@@ -1,6 +1,6 @@
 import { Button, Divider, Flex, HStack, Icon, Link, Menu, MenuButton,  Spacer,  Text, useColorMode } from '@chakra-ui/react'
 import React from 'react'
-import { BsChevronDoubleRight, BsListCheck, BsTrophy, BsPencilSquare } from 'react-icons/bs'
+import { BsChevronDoubleRight, BsListCheck, BsPencilSquare } from 'react-icons/bs'
 import { RiTimerFlashLine } from 'react-icons/ri'
 // import { GiArcheryTarget } from 'react-icons/gi'
 import { NavLink } from 'react-router-dom'
@@ -22,34 +22,56 @@ const NavItems = ({ onClick }) => {
             hasChild: false,
             icon: <RiTimerFlashLine/>
         },
-        {
-            page: '21 Days Challenge',
-            path: '21days',
-            hasChild: true,
-            icon: <BsTrophy/>,
-            child:[
-                {
-                    page: 'Challenge',
-                    path: 'challnge',
-                    hasChild: false,
-                },
-                {
-                    page: 'History',
-                    path: 'history',
-                    hasChild: false,
-                },
-                {
-                    page: 'Leaderboard',
-                    path: 'leaderboard',
-                    hasChild: false,
-                },
-            ]
-        },
+        // {
+        //     page: '21 Days Challenge',
+        //     path: '21days',
+        //     hasChild: true,
+        //     icon: <BsTrophy/>,
+        //     child:[
+        //         {
+        //             page: 'Challenge',
+        //             path: 'challnge',
+        //             hasChild: false,
+        //         },
+        //         {
+        //             page: 'History',
+        //             path: 'history',
+        //             hasChild: false,
+        //         },
+        //         {
+        //             page: 'Leaderboard',
+        //             path: 'leaderboard',
+        //             hasChild: false,
+        //         },
+        //     ]
+        // },
         {
             page: 'Notes',
             path: 'notes',
-            hasChild: false,
-            icon: <BsPencilSquare/>
+            hasChild: true,
+            icon: <BsPencilSquare/>,
+            child:[
+                {
+                    page: 'Notes',
+                    path: 'notes',
+                    hasChild: false,
+                },
+                {
+                    page: 'Folder',
+                    path: 'folder',
+                    hasChild: false,
+                },
+                {
+                    page: 'Archive',
+                    path: 'archive',
+                    hasChild: false,
+                },
+                {
+                    page: 'Trash',
+                    path: 'trash',
+                    hasChild: false,
+                },
+            ]
         },
     ] 
 
@@ -88,7 +110,7 @@ const NavItems = ({ onClick }) => {
                                     pl='10'
                                     pb='1' 
                                     _activeLink={{color: activeLinkColor}} 
-                                    to={`${item.path}/${subItem.path}`}
+                                    to={subItem.path ? `/${item.path}/${subItem.path}` : ``}
                                     w='100%'
                                     _hover={{textDecor: 'none'}}
                                 >
