@@ -5,14 +5,14 @@ import { useNotes } from '../../context'
 
 export const Notes = () => {
 
-    const { pinnedNotes, unPinnedNotes } = useNotes()
+    const { othersNote, pinnedNotes, unPinnedNotes } = useNotes()
 
   return (
     <>
         <Flex>
             <Sidebar/>
             <BodyWrapper>
-                <NotesHeaderSec/>
+                <NotesHeaderSec notes={othersNote}/>
                 <Divider/>
                 <NotesAddNewSec/>
                 <Divider/>

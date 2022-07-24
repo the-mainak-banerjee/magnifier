@@ -1,13 +1,13 @@
 import { Button, Container, Flex, IconButton, Text, useColorMode } from '@chakra-ui/react'
 import React, { useState } from 'react'
-import { BsFillPinFill, BsFolderSymlinkFill, BsPin } from 'react-icons/bs'
+import { BsCheckCircleFill, BsFillPinFill, BsFolderSymlinkFill, BsPin } from 'react-icons/bs'
 import { BiArchiveIn, BiArchiveOut } from 'react-icons/bi'
 import { useNotes } from '../../context'
 import { FaTrash, FaTrashAlt, FaTrashRestore } from 'react-icons/fa'
 
 export const NotesItem = ({ note,isTrash }) => {
     const { colorMode } = useColorMode()
-    const { notesDispatch, foldersDispatch } = useNotes()
+    const { notesDispatch, foldersDispatch, selectState, setSelectedNotes, onTrashPage } = useNotes()
     const [actionsVisibility, setActionsVisibility] = useState(false)
     
 
@@ -63,23 +63,37 @@ export const NotesItem = ({ note,isTrash }) => {
         foldersDispatch({type: 'DELETENOTE', fileId: note.id, folderId: note.folderId})   
     }
 
+    // Select Action handler
+
+    const handleSelectAction = () => {
+        notesDispatch({ type: 'SELECT', id:note.id})
+        if(note.isSelected){
+            setSelectedNotes(prevState => prevState.filter(item => item !== note.id))
+        }else{
+            setSelectedNotes(prevState => [...prevState,note.id])
+        }
+    }
+
 
 
   return (
     <Container maxW="xs" h='xs' pl={{base:'2', md:'4'}} pt={{base:'2', md:'4'}} pb='0' pr='1' m='2' borderWidth='2px' borderColor={colorMode=== 'light' ? 'gray.300' : 'gray.700'} borderRadius='lg' _hover={{boxShadow: 'xl'}} position='relative' onMouseEnter={() => setActionsVisibility(true)} onMouseLeave={() => setActionsVisibility(false)}>
 
         {note?.title && <Text fontSize='md' fontWeight='bold' >{note.title}</Text>}
+        
+        {(actionsVisibility || note.isSelected) && <IconButton size='md' variant='unstyled' icon={<BsCheckCircleFill/>} position='absolute' top='-4' left='-2' onClick={handleSelectAction}/>}
 
-        {actionsVisibility && !isTrash && <IconButton size='md' variant='unstyled' icon={note.isPinned ? <BsFillPinFill/> : <BsPin/>} position='absolute' top='2' right='0' onClick={handlePinAction}/>}
+        {(actionsVisibility && !selectState) && !onTrashPage && <IconButton size='md' variant='unstyled' icon={note.isPinned ? <BsFillPinFill/> : <BsPin/>} position='absolute' top='2' right='0' onClick={handlePinAction}/>}
+
 
         <Text fontSize='md' w='85%'>{trunCateString(note)}</Text>
 
-        {actionsVisibility && <Flex alignItems='center' gap='2' mb='2'mt='8' position='absolute' bottom='2' right='2'>
-            {!isTrash && <IconButton size='sm' icon={<BsFolderSymlinkFill/>}/>}
-            {!isTrash && <IconButton size='sm' icon={note.isArchived ? <BiArchiveOut/> : <BiArchiveIn/>} onClick={handleArchiveAction}/>}
-            {isTrash && <IconButton size='sm' icon={<FaTrash/>} onClick={handleDelete}/>}
+        {(actionsVisibility && !selectState) && <Flex alignItems='center' gap='2' mb='2'mt='8' position='absolute' bottom='2' right='2'>
+            {!onTrashPage && <IconButton size='sm' icon={<BsFolderSymlinkFill/>}/>}
+            {!onTrashPage && <IconButton size='sm' icon={note.isArchived ? <BiArchiveOut/> : <BiArchiveIn/>} onClick={handleArchiveAction}/>}
+            {onTrashPage && <IconButton size='sm' icon={<FaTrash/>} onClick={handleDelete}/>}
             <IconButton size='sm' icon={note.isTrashed ? <FaTrashRestore/> : <FaTrashAlt/>} onClick={handleTrashAction}/>
-            {!isTrash && <Button size='sm'>View</Button>}
+            {!onTrashPage && <Button size='sm'>View</Button>}
         </Flex>}
     </Container>
   )

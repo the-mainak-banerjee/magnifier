@@ -1,7 +1,7 @@
-import { Flex, Icon, Text, useColorMode } from '@chakra-ui/react'
+import { Divider, Flex, Icon, Text, useColorMode } from '@chakra-ui/react'
 import React from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
-import { BodyWrapper, NotesContainer, Sidebar } from '../../components'
+import { BodyWrapper, NotesContainer, NotesHeaderSec, Sidebar } from '../../components'
 import { useNotes } from '../../context'
 
 export const Trash = () => {
@@ -14,6 +14,8 @@ export const Trash = () => {
       <Flex>
             <Sidebar/>
             <BodyWrapper>
+              <NotesHeaderSec notes={trashedNotes}/>
+              <Divider/>
               {trashedNotes?.length>0 
               ? <NotesContainer notes={trashedNotes}/>
               : <Flex flexDirection='column' h='50vh' alignItems='center' justifyContent='center'>

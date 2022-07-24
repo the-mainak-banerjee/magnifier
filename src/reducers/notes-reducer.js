@@ -14,7 +14,7 @@ export const notesReducer = (state,action) => {
         case 'ARCHIVE': 
             return state?.map(item => {
                 if(item.id === action.id){
-                    return ({...item, isArchived: !item.isArchived})
+                    return ({...item, isArchived: !item.isArchived, isSelected: false})
                 }else{
                     return item
                 }
@@ -24,11 +24,21 @@ export const notesReducer = (state,action) => {
         case 'TRASH': 
             return state?.map(item => {
                 if(item.id === action.id){
-                    return ({...item, isTrashed: !item.isTrashed})
+                    return ({...item, isTrashed: !item.isTrashed, isSelected: false})
                 }else{
                     return item
                 }
         })
+
+
+        case 'SELECT': 
+            return state?.map(item => {
+                if(item.id === action.id){
+                    return ({...item, isSelected: !item.isSelected})
+                }else{
+                    return item
+                }
+            })
 
 
         case 'DELETE':
