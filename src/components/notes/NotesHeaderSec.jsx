@@ -1,4 +1,4 @@
-import { Container, Flex, Heading, HStack, IconButton, Input, Spacer } from '@chakra-ui/react'
+import { Container, Flex, Heading, HStack, IconButton, Input, Spacer, useToast } from '@chakra-ui/react'
 import React, {  useCallback, useMemo } from 'react'
 import { BiArchiveIn, BiArchiveOut } from 'react-icons/bi'
 import { BsArrowLeft, BsFolderSymlinkFill } from 'react-icons/bs'
@@ -27,6 +27,7 @@ export const NotesHeaderSec = () => {
   const navigate = useNavigate();
   const { currentFolder, setUserSearchTerm, selectState, selectedNotes, setSelectedNotes, onTrashPage, onArchivePage } = useNotes()
   const { user } = useAuth()
+  const toast = useToast()
 
 
   // Set the search functionality
@@ -40,6 +41,18 @@ export const NotesHeaderSec = () => {
 
   // Handle all actions
 
+  //  Toast Handler Function 
+    const showToast = (title) => {
+        toast({
+            title: title,
+            status: 'success',
+            isClosable: true,
+            position: 'bottom-left',
+            duration: 3000
+        })
+    }
+
+
   const handleArchiveAction = () => {
     selectedNotes.forEach(item => {
         const data = {
@@ -48,15 +61,17 @@ export const NotesHeaderSec = () => {
       }
       updateNoteData(user,item.id,data)
     })
+
+    if(onArchivePage){
+      showToast('Notes Unarchived')
+    }else{
+      showToast('Notes Archived')
+    }
+  
     setSelectedNotes([])
   }
 
-  const handleDelete = () => {
-    selectedNotes.forEach(item => 
-      deleteNoteData(user,item.id)
-    )
-    setSelectedNotes([])
-  }
+
 
   const handleTrashAction = () => {
       selectedNotes.forEach(item => {
@@ -66,9 +81,22 @@ export const NotesHeaderSec = () => {
       }
       updateNoteData(user,item.id,data)
     })
+    if(onTrashPage){
+      showToast('Notes Restored')
+    }else{
+      showToast('Notes Added To Trash')
+    }
     setSelectedNotes([])
   }
 
+
+  const handleDelete = () => {
+    selectedNotes.forEach(item => 
+      deleteNoteData(user,item.id)
+    )
+    setSelectedNotes([])
+    showToast('Notes Deleted Successfully')
+  }
 
  
   return (

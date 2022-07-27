@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Flex, Heading, Spacer, Text } from '@chakra-ui/react'
+import { Box, Divider, Flex, Heading, Spacer, Text } from '@chakra-ui/react'
 import React, { useRef }  from 'react'
 import { Sidebar, BodyWrapper, PomodoroContainer, PomodoroTasks } from '../../components'
 import { usePomo } from '../../context'
@@ -21,7 +21,7 @@ export const Pomodoro = () => {
                     <Text fontSize='lg' pt='1'>Beat Procastination And Improve Your Focus.</Text>
                   </Box>
                   <Spacer/>
-                  <Button colorScheme='gray'>Show Details</Button>
+                  {/* <Button colorScheme='gray'>Show Details</Button> */}
                 </Flex>
                 <Divider/>
                 <PomodoroContainer pomoContainerRef={pomoContainerRef} addTaskRef={addTaskRef}/>

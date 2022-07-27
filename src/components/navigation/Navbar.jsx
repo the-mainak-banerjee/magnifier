@@ -13,7 +13,7 @@ export const Navbar = () => {
     const  location  = useLocation()
 
   return (
-    <Box as='section' px={[5,10,16]} py={[5,10,6]} bg={colorMode=== 'light' ? 'gray.50' : 'gray.700'}>
+    <Box as='section' px={[5,10,16]} py={[5,10,6]} position='fixed' bg={colorMode=== 'light' ? 'gray.50' : 'gray.700'} w='full' zIndex='sticky'>
       <Flex 
         align='center'
       >

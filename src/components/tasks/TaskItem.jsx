@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Flex, IconButton, Spacer, Text, Textarea, useColorMode } from '@chakra-ui/react'
+import { Button, ButtonGroup, Flex, IconButton, Spacer, Text, Textarea, useColorMode, useToast } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { BsCheckLg, BsFillCheckCircleFill, BsFillPenFill, BsFillTrashFill } from 'react-icons/bs'
 import { AiFillCloseCircle } from 'react-icons/ai'
@@ -13,26 +13,39 @@ export const TaskItem = ({ task, pencil, check, idx }) => {
   const [isEditing,setIsEditing] = useState(false)
   const [editableTask,setEditableTask] = useState('')
   const { colorMode } = useColorMode()
+  const toast = useToast()
   
   const { user } = useAuth()
 
   const activeTaskBgColor = colorMode === 'light' ? 'blue.300'  : 'blue.600'
   const completedTaskBgColor = colorMode === 'light' ? 'green.300'  : 'green.600'
 
-  const handleDelete = () => {
-      // kisDispatch({ type: 'DELETE' , payload: task?.id})
-      
+
+    //  Toast Handler Function 
+    const showToast = (title) => {
+      toast({
+          title: title,
+          status: 'success',
+          isClosable: true,
+          position: 'bottom-left',
+          duration: 3000
+      })
+  }
+
+
+  // All Action handler 
+
+  const handleDelete = () => {    
       deleteData(user,'KISTask', task?.id)
 
       if(allPomodoroTask.some(item => item.id === task.id)){
-        // pomoDispatch({ type: 'DELETE' , payload: task?.id})
         deleteData(user,'PomoTask', task?.id)
       }  
 
       if(pomodoroTask?.id === task.id){
         setPomodoroTask(null)
       }
-
+      showToast('Task Deleted Successfully!')
   }
   
   const handleCompletedtask = () => {
@@ -51,6 +64,12 @@ export const TaskItem = ({ task, pencil, check, idx }) => {
 
       if(pomodoroTask?.id === task.id){
         setPomodoroTask(null)
+      }
+      
+      if(task.completed){
+        showToast('Task Maked as incomplete')
+      }else{
+        showToast('Wooohoo! You completed the task')
       }
   }
 
@@ -72,6 +91,8 @@ export const TaskItem = ({ task, pencil, check, idx }) => {
     }
     
     setIsEditing(prevState => !prevState)
+
+    showToast('Task Edited Successfully!')
   }
 
   const handleEditFormVisibility = () => {

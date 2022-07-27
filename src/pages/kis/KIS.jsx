@@ -25,7 +25,7 @@ export const KIS = () => {
                   <Text fontSize='lg' pt='1'>Your Top 3 to 5 Important and Urgent Task Of The Day.</Text>
                 </Box>
                 <Spacer/>
-                <Button colorScheme='gray'>Show Details</Button>
+                {/* <Button colorScheme='gray'>Show Details</Button> */}
               </Flex>
               <Divider/>
               <TaskContainer

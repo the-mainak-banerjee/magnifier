@@ -1,8 +1,10 @@
-import { Button, Divider, Flex, HStack, Icon, Link, Menu, MenuButton,  Spacer,  Text, useColorMode } from '@chakra-ui/react'
+import { Button, Divider, Flex, HStack, Link, Menu, MenuButton,  Text, useColorMode } from '@chakra-ui/react'
 import React from 'react'
-import { BsChevronDoubleRight, BsListCheck, BsPencilSquare } from 'react-icons/bs'
+import { BsCardText, BsListCheck, BsPencilSquare } from 'react-icons/bs'
 import { RiTimerFlashLine } from 'react-icons/ri'
-// import { GiArcheryTarget } from 'react-icons/gi'
+import { BiArchiveIn } from 'react-icons/bi'
+import { FaTrashAlt } from 'react-icons/fa'
+import { AiOutlineFolderOpen } from 'react-icons/ai'
 import { NavLink } from 'react-router-dom'
 import { v4 as uuid} from 'uuid'
 import { useAuth } from '../../context'
@@ -20,29 +22,6 @@ const navItems = [
         hasChild: false,
         icon: <RiTimerFlashLine/>
     },
-    // {
-    //     page: '21 Days Challenge',
-    //     path: '21days',
-    //     hasChild: true,
-    //     icon: <BsTrophy/>,
-    //     child:[
-    //         {
-    //             page: 'Challenge',
-    //             path: 'challnge',
-    //             hasChild: false,
-    //         },
-    //         {
-    //             page: 'History',
-    //             path: 'history',
-    //             hasChild: false,
-    //         },
-    //         {
-    //             page: 'Leaderboard',
-    //             path: 'leaderboard',
-    //             hasChild: false,
-    //         },
-    //     ]
-    // },
     {
         page: 'Notes',
         path: 'notes',
@@ -50,24 +29,28 @@ const navItems = [
         icon: <BsPencilSquare/>,
         child:[
             {
-                page: 'Notes',
+                page: 'All Notes',
                 path: 'notes',
                 hasChild: false,
+                icon: <BsCardText/>
             },
             {
                 page: 'Folder',
                 path: 'folder',
                 hasChild: false,
+                icon: <AiOutlineFolderOpen/>
             },
             {
                 page: 'Archive',
                 path: 'archive',
                 hasChild: false,
+                icon: <BiArchiveIn/>
             },
             {
                 page: 'Trash',
                 path: 'trash',
                 hasChild: false,
+                icon: <FaTrashAlt/>
             },
         ]
     },
@@ -82,10 +65,11 @@ const NavItems = ({ onClick }) => {
 
     const handleLogOut = () => {
         logOut()
+        onClick()
     }
     
   return (
-    <Flex direction='column' justifyContent='space-between' gap='32' w='100%'>
+    <Flex direction='column' justifyContent='space-between' gap='12' w='100%'>
         <Flex
             direction='column' 
         >
@@ -120,8 +104,8 @@ const NavItems = ({ onClick }) => {
                                     w='100%'
                                     _hover={{textDecor: 'none'}}
                                 >
-                                    <HStack>
-                                        <Icon as={BsChevronDoubleRight}/>
+                                    <HStack onClick={onClick}>
+                                        {subItem.icon}
                                         <Text as='p'>{subItem.page}</Text>
                                     </HStack>
                                 </Link>
@@ -132,7 +116,7 @@ const NavItems = ({ onClick }) => {
                 )
             })} 
         </Flex>
-        <Spacer/>
+        {/* <Spacer/> */}
         <Button colorScheme='red' onClick={handleLogOut}>Log Out</Button>
     </Flex>
 

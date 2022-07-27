@@ -10,6 +10,7 @@ import { updateUser } from '../../backend/controllers/UserControllers'
 
 export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
 
+
     const [formData, setFormData] = useState({
         id: '',
         name:'',
@@ -27,7 +28,7 @@ export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
     const [editableTask,setEditableTask] = useState({})
     const [loading,setLoading] = useState(false)
 
-    const {allPomodoroTask, reset, setReset, setPause, pomodoroTask} = usePomo()
+    const {allPomodoroTask, todaysPomodoroTasks, reset, setReset, setPause, pomodoroTask} = usePomo()
     const { kisOfTheDay } = useKis()
     const { user } = useAuth()
 
@@ -52,7 +53,8 @@ export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
                 name: formData.name,
                 taskType: formData.taskType,
                 completed: false,
-                usedPomodoroNo: {short:0, medium: 0}
+                usedPomodoroNo: {short:0, medium: 0},
+                date: new Date().toDateString()
             }
             addData(setLoading,user,'PomoTask', data, formData.id)
 
@@ -72,6 +74,7 @@ export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
                 taskType: kisFormData.taskType,
                 completed: false,
                 usedPomodoroNo: {short:0, medium: 0},
+                date: new Date().toDateString()
                 // kisTaskId: kisFormData.id
             }
             addData(setLoading,user,'PomoTask', data, kisFormData.id)
@@ -205,7 +208,7 @@ export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
             ? <Button w='100%' colorScheme='blue' onClick={handleTaskEdit} mt='4' disabled={!editableTask}>Update Task</Button>
             :<Button w='100%' colorScheme='blue' onClick={handleTaskForm} mt='4' disabled={!formData.name && !kisFormData.name} isLoading={loading} loadingText='Adding...'>Add Task</Button>}
         </Container>}
-        {allPomodoroTask?.length > 0 && <Container maxW="container.lg" p='0' my='4'>
+        {todaysPomodoroTasks?.length > 0 && <Container maxW="container.lg" p='0' my='4'>
             <TableContainer>
                 <Table size='lg'>
                     <Thead>
@@ -218,7 +221,7 @@ export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {allPomodoroTask?.map((task, idx) => {
+                        {todaysPomodoroTasks?.map((task, idx) => {
                             return(
                                 <Tr key={task.id} bg={task?.completed &&  completedTaskBgColor}>
                                     <Td>{idx+1}</Td>

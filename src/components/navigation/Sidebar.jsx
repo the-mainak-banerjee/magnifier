@@ -8,15 +8,14 @@ export const Sidebar = () => {
     <>
         {/* <Show breakpoint='(min-width: 761px)'> */}
             <Flex
-                pos='sticky'
+                position='fixed'
+                top='20'
                 w='300px'
-                h='100vh'
+                // h='full'
                 // bg='gray.50'
                 px='16'
                 py='5'
-                borderRight='1px'
-                borderColor='gray.100'
-                display={{base: 'none', lg:'block'}}
+                display={{base: 'none', lg:'flex'}}
             >
                 <NavItems/>
             </Flex>

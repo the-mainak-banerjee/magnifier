@@ -11,14 +11,14 @@ export const Notes = () => {
 
   return (
     <>
-        <Flex>
+        <Flex as='section'>
             <Sidebar/>
             <BodyWrapper>
                 <NotesHeaderSec/>
                 <Divider/>
                 <NotesAddNewSec/>
                 {pinnedNotes.length>0 && <NotesPinnedSec/>}
-                {pinnedNotes?.length > 0 && <Text fontSize='md' fontWeight='semiBold' ml='6'>OTHERS</Text>}
+                {pinnedNotes?.length > 0 && <Text fontSize='md' fontWeight='semiBold' ml={{base: '6', lg:'16'}}>OTHERS</Text>}
                 {othersNote?.length > 0
                 ? <NotesContainer notes={unPinnedNotes}/>
                 : <Flex flexDirection='column' h='50vh' alignItems='center' justifyContent='center'>

@@ -1,8 +1,7 @@
-import { createContext, useContext,  useEffect,  useMemo, useState } from "react";
+import { createContext, useContext,  useEffect, useMemo, useState } from "react";
 import { getData, updateData } from "../backend/controllers/TaskControllers";
 import { updateUser } from "../backend/controllers/UserControllers";
 import useActiveUser from "../hooks/useActiveUser";
-// import { taskReducer } from "../reducers/task-reducer";
 import { useAuth } from "./auth-context";
 
 
@@ -11,20 +10,16 @@ const PomodoroContext = createContext()
 
 const PomodoroContextProvider = ( { children }) => {
 
+    const date = useMemo(() => {
+        return new Date().toDateString()
+    },[])
+
+
     const [timerType, setTimerType] = useState({
         focus: 2,
         shortBreak: 1,
         longBreak: 60
     })
-
-    const date = useMemo(() => {
-        return new Date()
-    }, [])
-
-    // const localDate  = JSON.parse(localStorage.getItem('magnifierDate'))
-    
-
- 
     const [sec,setSec] = useState(0)
     const [min,setMin] = useState(timerType.focus)
     const [focus,setFocus] = useState(true)
@@ -34,15 +29,12 @@ const PomodoroContextProvider = ( { children }) => {
     const [longBreak,setLongBreak] = useState(false)
     const [totalPomo, setTotalPomo] = useState({})
     const [pomodoroTask, setPomodoroTask] = useState('')
-    // const [allPomodoroTasks,dispatch] = useReducer(taskReducer,[])
     const [allPomodoroTask,setAllPomodoroTasks] = useState([])
-    // const [currentDate] = useState(localDate?.activeDate)
+    const [todaysPomodoroTasks,setTodaysPomodoroTasks] = useState([])
 
-    // console.log(currentDate)
 
     const { user } = useAuth()
     const { accountDetails } = useActiveUser(user?.uid)
-
 
     // Get AllPomodoro Tasks from Data Base 
 
@@ -52,6 +44,10 @@ const PomodoroContextProvider = ( { children }) => {
         return () => unSub && unSub()
     },[user])
 
+
+    useEffect(() => {
+        setTodaysPomodoroTasks(allPomodoroTask.filter(item => item.date === date))
+    }, [date,allPomodoroTask])
 
     // Set Pomodoro Task and Pomodoro No 
 
@@ -64,24 +60,18 @@ const PomodoroContextProvider = ( { children }) => {
 
     // Change The Total Pomodoro Number Of The day to 0 if date changes
 
-    // useEffect(() => {
-    //     if(totalPomo!=={} && user){
-    //         if(date.getDate() !== currentDate) {
-    //             updateUser(user?.uid,{totalPomoOfTheDay: {date:date.getDate() ,short:0, medium:0},pomoDoroTask:{},})
-    //             allPomodoroTask.forEach(item => {
-    //                 deleteData(user,'PomoTask', item?.id) 
-    //             })
-    //         } 
-    //     }
-    //     console.log('outside condition')
-    // },[date,totalPomo,user,currentDate,allPomodoroTask]) 
+    useEffect(() => {
+        if(user){
+            updateUser(user?.uid, {
+                totalPomoOfTheDay: {date:date, short:0, medium:0},
+                pomoDoroTask:{},
+            })
+        }
+
+        // eslint-disable-next-line
+    },[date])
 
  
-
-
-    useEffect(() => {
-        localStorage.setItem('magnifierDate', JSON.stringify({activeDate: date.getDate()}))
-    },[date])
 
 
     const interval = setInterval(() => {
@@ -152,11 +142,9 @@ const PomodoroContextProvider = ( { children }) => {
     const pomoSec = sec < 10 ? `0${sec}` : sec
     const pomoMin = min < 10 ? `0${min}` : min
 
-    // console.log(accountDetails)
-
     return (
         <PomodoroContext.Provider 
-        value={{focus,startFocus,shortBreak,startShortBreak, longBreak, startLongBreak, pause,setPause,reset,setReset,setTimerType, pomoSec, pomoMin, pomodoroTask, setPomodoroTask, totalPomo, allPomodoroTask}}>
+        value={{focus,startFocus,shortBreak,startShortBreak, longBreak, startLongBreak, pause,setPause,reset,setReset,setTimerType, pomoSec, pomoMin, pomodoroTask, setPomodoroTask, totalPomo, allPomodoroTask,todaysPomodoroTasks}}>
             {children}
         </PomodoroContext.Provider>
     )

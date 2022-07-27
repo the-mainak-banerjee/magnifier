@@ -1,4 +1,4 @@
-import { Button, Container, Flex, IconButton, Text, useColorMode, useDisclosure } from '@chakra-ui/react'
+import { Button, Container, Flex, IconButton, Text, useColorMode, useDisclosure, useToast } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { BsCheckCircleFill, BsFillPinFill, BsFolderSymlinkFill, BsPin } from 'react-icons/bs'
 import { BiArchiveIn, BiArchiveOut } from 'react-icons/bi'
@@ -15,6 +15,9 @@ export const NotesItem = ({ note }) => {
     const [actionsVisibility, setActionsVisibility] = useState(false)
     const navigate = useNavigate()
     const { user } = useAuth()
+    const toast = useToast()
+
+
 
     // Create truncate string
     const trunCateString = (text) => {
@@ -26,6 +29,17 @@ export const NotesItem = ({ note }) => {
     }
 
 
+    // Toast Handler Function 
+    const showToast = (title) => {
+        toast({
+            title: title,
+            status: 'success',
+            isClosable: true,
+            position: 'bottom-left',
+            duration: 3000
+        })
+    }
+
     // All The Action Handler
 
     // Pinned A Note
@@ -36,11 +50,6 @@ export const NotesItem = ({ note }) => {
             isArchived: note.isArchived && !note.isArchived
         }
         updateNoteData(user,note.id,data)
-
-        // Remove from archive if it is already there.
-        // if(note.isArchived){
-        //     notesDispatch({type: 'ARCHIVE', id:note.id})
-        // }
     }
 
     // Archive a Note
@@ -50,6 +59,11 @@ export const NotesItem = ({ note }) => {
             isArchived: !note.isArchived
         }
         updateNoteData(user,note.id,data)
+        if(note.isArchived){
+            showToast('Note Unarchived')
+        }else{
+            showToast('Note Archived')
+        }
     }
 
 
@@ -60,21 +74,27 @@ export const NotesItem = ({ note }) => {
             isTrashed: !note.isTrashed
         }
         updateNoteData(user,note.id,data)
+
+        if(note.isTrashed){
+            showToast('Note Restored')
+        }else{
+            showToast('Note Added To Trash')
+        }
     }
 
 
     // Delete The Note Completely
     const handleDelete= () => {
-        // notesDispatch({type: 'DELETE', id:note.id}) 
         deleteNoteData(user,note.id)
 
         // Remove the note from Folder
-        foldersDispatch({type: 'DELETENOTE', fileId: note.id, folderId: note.folderId})   
+        foldersDispatch({type: 'DELETENOTE', fileId: note.id, folderId: note.folderId})  
+        
+        showToast('Note Deleted Successfully')
     }
 
     // Select Action handler
     const handleSelectAction = () => {
-        // notesDispatch({ type: 'SELECT', id:note.id})
         const data = {
             isSelected: !note.isSelected
         }
@@ -86,8 +106,6 @@ export const NotesItem = ({ note }) => {
             setSelectedNotes(prevState => [...prevState,note])
         }
     }
-
-    // console.log(note)
    
 
     const handleViewNote = () => {
