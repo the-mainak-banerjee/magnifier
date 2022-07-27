@@ -9,7 +9,7 @@ const theme = extendTheme({
     fonts: {
         ...base.fonts,
         heading: `Montserrat`,
-        body: `'Inter'`
+        body: `Inter`
     },
     config
 })

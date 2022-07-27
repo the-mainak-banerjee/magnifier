@@ -1,15 +1,20 @@
-import { Button, Container, Flex, IconButton, Text, useColorMode } from '@chakra-ui/react'
+import { Button, Container, Flex, IconButton, Text, useColorMode, useDisclosure } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { BsCheckCircleFill, BsFillPinFill, BsFolderSymlinkFill, BsPin } from 'react-icons/bs'
 import { BiArchiveIn, BiArchiveOut } from 'react-icons/bi'
-import { useNotes } from '../../context'
+import { useAuth, useNotes } from '../../context'
 import { FaTrash, FaTrashAlt, FaTrashRestore } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
+import { deleteNoteData, updateNoteData } from '../../backend/controllers/NotesControllers'
+import { NewFolderModal } from './NewFolderModal'
 
-export const NotesItem = ({ note,isTrash }) => {
+export const NotesItem = ({ note }) => {
+    const { isOpen, onOpen, onClose } = useDisclosure()
     const { colorMode } = useColorMode()
-    const { notesDispatch, foldersDispatch, selectState, setSelectedNotes, onTrashPage } = useNotes()
+    const { foldersDispatch, selectState, setSelectedNotes, onTrashPage, onArchivePage } = useNotes()
     const [actionsVisibility, setActionsVisibility] = useState(false)
-    
+    const navigate = useNavigate()
+    const { user } = useAuth()
 
     // Create truncate string
     const trunCateString = (text) => {
@@ -25,55 +30,69 @@ export const NotesItem = ({ note,isTrash }) => {
 
     // Pinned A Note
     const handlePinAction = () => {
-        notesDispatch({type: 'PIN', id:note.id})
+        // notesDispatch({type: 'PIN', id:note.id})
+        const data = {
+            isPinned: !note.isPinned,
+            isArchived: note.isArchived && !note.isArchived
+        }
+        updateNoteData(user,note.id,data)
 
         // Remove from archive if it is already there.
-        if(note.isArchived){
-            notesDispatch({type: 'ARCHIVE', id:note.id})
-        }
+        // if(note.isArchived){
+        //     notesDispatch({type: 'ARCHIVE', id:note.id})
+        // }
     }
 
     // Archive a Note
     const handleArchiveAction = () => {
-        notesDispatch({type: 'ARCHIVE', id:note.id})
-
-        // If it is pinned them remove pin
-        if(note.isPinned){
-            notesDispatch({type: 'PIN', id:note.id})
+        const data = {
+            isPinned: note.isPinned && !note.isPinned,
+            isArchived: !note.isArchived
         }
+        updateNoteData(user,note.id,data)
     }
 
 
     // Add A Note to Trash
     const handleTrashAction = () => {
-        notesDispatch({type: 'TRASH', id:note.id})
-        
-         // If it is pinned them remove pin
-        if(note.isPinned){
-            notesDispatch({type: 'PIN', id:note.id})
+        const data = {
+            isPinned: note.isPinned && !note.isPinned,
+            isTrashed: !note.isTrashed
         }
+        updateNoteData(user,note.id,data)
     }
 
 
     // Delete The Note Completely
     const handleDelete= () => {
-        notesDispatch({type: 'DELETE', id:note.id}) 
+        // notesDispatch({type: 'DELETE', id:note.id}) 
+        deleteNoteData(user,note.id)
 
         // Remove the note from Folder
         foldersDispatch({type: 'DELETENOTE', fileId: note.id, folderId: note.folderId})   
     }
 
     // Select Action handler
-
     const handleSelectAction = () => {
-        notesDispatch({ type: 'SELECT', id:note.id})
+        // notesDispatch({ type: 'SELECT', id:note.id})
+        const data = {
+            isSelected: !note.isSelected
+        }
+        updateNoteData(user,note.id,data)
+
         if(note.isSelected){
-            setSelectedNotes(prevState => prevState.filter(item => item !== note.id))
+            setSelectedNotes(prevState => prevState.filter(item => item.id !== note.id))
         }else{
-            setSelectedNotes(prevState => [...prevState,note.id])
+            setSelectedNotes(prevState => [...prevState,note])
         }
     }
 
+    // console.log(note)
+   
+
+    const handleViewNote = () => {
+        navigate(`/notes/${note.id}`)
+    }
 
 
   return (
@@ -89,12 +108,18 @@ export const NotesItem = ({ note,isTrash }) => {
         <Text fontSize='md' w='85%'>{trunCateString(note)}</Text>
 
         {(actionsVisibility && !selectState) && <Flex alignItems='center' gap='2' mb='2'mt='8' position='absolute' bottom='2' right='2'>
-            {!onTrashPage && <IconButton size='sm' icon={<BsFolderSymlinkFill/>}/>}
+            {!onTrashPage && !onArchivePage && <IconButton size='sm' icon={<BsFolderSymlinkFill/>} onClick={onOpen}/>}
             {!onTrashPage && <IconButton size='sm' icon={note.isArchived ? <BiArchiveOut/> : <BiArchiveIn/>} onClick={handleArchiveAction}/>}
             {onTrashPage && <IconButton size='sm' icon={<FaTrash/>} onClick={handleDelete}/>}
             <IconButton size='sm' icon={note.isTrashed ? <FaTrashRestore/> : <FaTrashAlt/>} onClick={handleTrashAction}/>
-            {!onTrashPage && <Button size='sm'>View</Button>}
+            {!onTrashPage && <Button size='sm' onClick={handleViewNote}>View</Button>}
         </Flex>}
+        
+        <NewFolderModal
+            isOpen={isOpen}
+            onClose={onClose}
+            note={note}
+        />
     </Container>
   )
 }

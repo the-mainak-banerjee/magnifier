@@ -3,24 +3,52 @@ import React, { useState } from 'react'
 import DatePicker from 'react-date-picker'
 import { useKis } from '../../context/kis-context'
 import { TaskItem } from './TaskItem'
+import { useAuth } from '../../context'
+import { addData } from '../../backend/controllers/TaskControllers'
 
 
 
 export const AddTaskModal = ({ isOpen, onClose, dateValue, onChange }) => {
     const initialRef = React.useRef(null)
     const [formData, setFormData] = useState('')
-    const { state,dispatch } = useKis()
+    const { kisOfTheDay,dispatch } = useKis()
+
+    const [loading,setLoading] = useState(false)
+    const { user } = useAuth()
 
     const handleInputChange = (e) => {
         setFormData(e.target.value)
      }
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = async (e) => {
         e.preventDefault()
-        dispatch({ type: 'ADD', payload: formData})
+        dispatch({ type: 'ADD' , payload: formData})
+
+        // setLoading(true)
+        // try{
+        //   await setDoc(doc(db,'users',`${user.uid}`,'KISTask',`${uuid()}`), {
+        //     name: formData,
+        //     taskType: 'KIS',
+        //     completed: false,
+        // })
+        //   setLoading(false)
+        //   setFormData('')
+        // }catch(error){
+        //   console.log(error)
+        //   setLoading(false)
+        // }
+
+        const data = {
+          name: formData,
+          taskType: 'KIS',
+          completed: false,
+        }
+
+        addData(setLoading,user,'KISTask',data)
         setFormData('')
     }
 
+  
 
   return (
     <>
@@ -37,12 +65,12 @@ export const AddTaskModal = ({ isOpen, onClose, dateValue, onChange }) => {
           <ModalHeader textAlign='center'>Add Your KIS</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            {state?.length<5 
+            {kisOfTheDay?.length<5 
             ? <FormControl isRequired>
               <Flex direction='column'>
                 <DatePicker onChange={onChange} value={dateValue}/>
                 <Textarea ref={initialRef} placeholder='Read Book' onChange={handleInputChange} value={formData} mt='4' />
-                <Button colorScheme='green' mt='2' onClick={handleFormSubmit} disabled={!formData || !dateValue}>Add Task</Button>
+                <Button colorScheme='green' mt='2' onClick={handleFormSubmit} disabled={!formData || !dateValue} isLoading={loading} loadingText='Adding Task...'>Add Task</Button>
               </Flex>
             </FormControl>
             :   <Center>
@@ -50,7 +78,7 @@ export const AddTaskModal = ({ isOpen, onClose, dateValue, onChange }) => {
                 </Center> 
             }
             <VStack pt='8'>
-            {state?.map((task,idx) => {
+            {kisOfTheDay?.map((task,idx) => {
                 return (
                     <TaskItem key={task.id} task={task} pencil={true} idx={idx}/>
                 )

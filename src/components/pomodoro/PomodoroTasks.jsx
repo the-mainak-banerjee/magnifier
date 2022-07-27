@@ -1,9 +1,11 @@
 import { Badge, Button, Container, Flex, Heading, HStack, IconButton, Input, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr, useColorMode, VStack} from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
-import { useKis, usePomo } from '../../context'
+import { useAuth, useKis, usePomo } from '../../context'
 import { v4 as uuid } from 'uuid'
 import { BsCheckLg,  BsFillPenFill, BsFillTrashFill } from 'react-icons/bs'
 import { FaUndo } from 'react-icons/fa'
+import { addData, deleteData, updateData } from '../../backend/controllers/TaskControllers'
+import { updateUser } from '../../backend/controllers/UserControllers'
 
 
 export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
@@ -22,33 +24,41 @@ export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
     })
     const [kisTaskData,setKisTaskData] = useState([])
     const [isEditing,setIsEditing] = useState(false)
-    const [editableTask,setEditableTask] = useState({
-        id: 0,
-        name: '',
-        taskType:''
-    })
+    const [editableTask,setEditableTask] = useState({})
+    const [loading,setLoading] = useState(false)
 
-    const {allPomodoroTask, reset, setReset, setPause, dispatch: pomoDispatch, setPomodoroTask, pomodoroTask} = usePomo()
-    const { state, dispatch: kisDispatch } = useKis()
+    const {allPomodoroTask, reset, setReset, setPause, pomodoroTask} = usePomo()
+    const { kisOfTheDay } = useKis()
+    const { user } = useAuth()
 
     const { colorMode } = useColorMode()
     const completedTaskBgColor = colorMode === 'light' ? 'green.300'  : 'green.600'
 
     useEffect(() => {
-        setKisTaskData(state?.filter(task=>!task.completed && !allPomodoroTask.some(data => data.id === task.id)))
-    },[state,allPomodoroTask])
+        setKisTaskData(kisOfTheDay?.filter(task=>!task.completed && !allPomodoroTask.some(data => data.id === task.id)))
+    },[kisOfTheDay,allPomodoroTask])
 
 
     const handleKisSelection = (e) => {
-        const kisTask = state.find(item => item.id === e.target.value)
+        const kisTask = kisOfTheDay.find(item => item.id === e.target.value)
         setKisFormData({name:kisTask.name, taskType:'KIS',id:kisTask.id, usedPomodoroNo: 0,})
     }
 
 
     const handleTaskForm = () => {
         if(formData.name){
-            pomoDispatch({ type: 'ADDPOMO', name: formData.name, id:formData.id, taskType: formData.taskType})
-            setPomodoroTask(formData)
+            // pomoDispatch({ type: 'ADDPOMO', name: formData.name, id:formData.id, taskType: formData.taskType})
+            const data = {
+                name: formData.name,
+                taskType: formData.taskType,
+                completed: false,
+                usedPomodoroNo: {short:0, medium: 0}
+            }
+            addData(setLoading,user,'PomoTask', data, formData.id)
+
+            // setPomodoroTask(formData)
+            updateUser(user.uid,{pomoDoroTask: {...data, id:formData.id}})
+
             setFormData({
                 id: '',
                 name:'',
@@ -56,8 +66,18 @@ export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
                 taskType: ''
             })
         }else if(kisFormData.name){
-            pomoDispatch({ type: 'ADDPOMO', name: kisFormData.name, id:kisFormData.id, taskType: kisFormData.taskType})
-            setPomodoroTask(kisFormData)
+            // pomoDispatch({ type: 'ADDPOMO', name: kisFormData.name, id:kisFormData.id, taskType: kisFormData.taskType})
+            const data = {
+                name: kisFormData.name,
+                taskType: kisFormData.taskType,
+                completed: false,
+                usedPomodoroNo: {short:0, medium: 0},
+                // kisTaskId: kisFormData.id
+            }
+            addData(setLoading,user,'PomoTask', data, kisFormData.id)
+            
+            // setPomodoroTask(kisFormData)
+            updateUser(user.uid,{pomoDoroTask: {...data, id:kisFormData.id}})
             setKisFormData({
                 id: '',
                 name:'',
@@ -71,40 +91,61 @@ export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
 
 
     const handleDelete = (task) => {
-        if(pomodoroTask?.id === task.id){
-            setPomodoroTask(null)
-        }
+        // pomoDispatch({ type: 'DELETE' , payload: task?.id})
+        deleteData(user,'PomoTask', task?.id) 
 
         if(task.taskType === 'KIS'){
-            kisDispatch({ type: 'DELETE' , payload: task?.id}) 
+            // kisDispatch({ type: 'DELETE' , payload: task?.id}) 
+            deleteData(user,'KISTask', task?.id) 
         }
 
-        pomoDispatch({ type: 'DELETE' , payload: task?.id})
+
+        if(pomodoroTask?.id === task.id){
+            // setPomodoroTask(null)
+            updateUser(user.uid,{pomoDoroTask: {}})
+        }
+
     }
     
 
     const handleCompletedtask = (task) => {
-        pomoDispatch({ type: 'COMPLETE', payload: task?.id})
+        // pomoDispatch({ type: 'COMPLETE', payload: task?.id})
+        let updatedData = {
+            completed: !task.completed
+          }
+    
+          updateData(user,'PomoTask', task.id, updatedData)
 
         if(task.taskType === 'KIS'){
-            kisDispatch({ type: 'COMPLETE' , payload: task?.id}) 
+            // kisDispatch({ type: 'COMPLETE' , payload: task?.id}) 
+            updateData(user,'KISTask', task.id, updatedData)
         }
 
         if(pomodoroTask?.id === task.id){
-            setPomodoroTask(null)
+            // setPomodoroTask(null)
+            updateUser(user.uid,{pomoDoroTask: {}})
         }
     }
 
 
     const handleTaskEdit = () => {
-        pomoDispatch({ type: 'EDIT', id: editableTask.id, payload: editableTask.name })
+        // pomoDispatch({ type: 'EDIT', id: editableTask.id, payload: editableTask.name })
+
+        let updatedData = {
+            name: editableTask.name
+          }
+    
+          updateData(user,'PomoTask', editableTask.id, updatedData)
 
         if(editableTask.taskType === 'KIS'){
-            kisDispatch({ type: 'EDIT', id: editableTask.id, payload: editableTask.name })
+            // kisDispatch({ type: 'EDIT', id: editableTask.id, payload: editableTask.name })
+
+            updateData(user,'KISTask', editableTask.id, updatedData)
         }
 
         if(pomodoroTask?.id === editableTask.id){
-            setPomodoroTask(prevData => ({...prevData, name: editableTask.name}))
+            // setPomodoroTask(prevData => ({...prevData, name: editableTask.name}))
+            updateUser(user.uid,{pomoDoroTask: {...pomodoroTask, name: editableTask.name}})
         }
 
         setIsEditing(prevState => !prevState)
@@ -113,14 +154,15 @@ export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
 
     const handleEditFormVisibility = (task) => {
         setIsEditing(prevState => !prevState)
-        setEditableTask({name: task?.name, id:task?.id, taskType:task?.taskType})
+        setEditableTask(task)
     }
 
 
     const handleTaskStart = (task) => {
-        setPomodoroTask(task)
+        // setPomodoroTask(task)
+        updateUser(user.uid,{pomoDoroTask: task})
         setReset(prevState => !prevState)
-        pomoContainerRef.current.scrollToView()
+        pomoContainerRef.current.scrollIntoView()
     }
       
 
@@ -132,7 +174,7 @@ export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
                 ? <Input placeholder='Add A Task' value={editableTask.name} onChange={(e) => setEditableTask(prevData => ({...prevData, name:e.target.value}))}/>
                 : <Flex flexDirection='column' alignItems='center' w='full'>    
                     <Heading as='h4' size='md' mb='2'>Add Tasks To Focus On</Heading> 
-                    <Input placeholder='Add A Task' value={formData.name} onChange={(e) => setFormData({name:e.target.value, taskType:'POMO',id:uuid(), usedPomodoroNo: 0,})} isDisabled={kisFormData.name}/>
+                    <Input placeholder='Add A Task' value={formData.name} onChange={(e) => setFormData({name:e.target.value, taskType:'POMO', usedPomodoroNo: 0,  id: uuid()})} isDisabled={kisFormData.name}/>
                 </Flex>
                 }
 
@@ -161,7 +203,7 @@ export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
             </Flex>
             {isEditing 
             ? <Button w='100%' colorScheme='blue' onClick={handleTaskEdit} mt='4' disabled={!editableTask}>Update Task</Button>
-            :<Button w='100%' colorScheme='blue' onClick={handleTaskForm} mt='4' disabled={!formData.name && !kisFormData.name}>Add Task</Button>}
+            :<Button w='100%' colorScheme='blue' onClick={handleTaskForm} mt='4' disabled={!formData.name && !kisFormData.name} isLoading={loading} loadingText='Adding...'>Add Task</Button>}
         </Container>}
         {allPomodoroTask?.length > 0 && <Container maxW="container.lg" p='0' my='4'>
             <TableContainer>

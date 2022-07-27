@@ -5,78 +5,84 @@ import { RiTimerFlashLine } from 'react-icons/ri'
 // import { GiArcheryTarget } from 'react-icons/gi'
 import { NavLink } from 'react-router-dom'
 import { v4 as uuid} from 'uuid'
+import { useAuth } from '../../context'
 
+const navItems = [
+    {
+        page: 'KIS',
+        path: 'kis',
+        hasChild: false,
+        icon: <BsListCheck/>
+    },
+    {
+        page: 'Pomodoro',
+        path: 'pomodoro',
+        hasChild: false,
+        icon: <RiTimerFlashLine/>
+    },
+    // {
+    //     page: '21 Days Challenge',
+    //     path: '21days',
+    //     hasChild: true,
+    //     icon: <BsTrophy/>,
+    //     child:[
+    //         {
+    //             page: 'Challenge',
+    //             path: 'challnge',
+    //             hasChild: false,
+    //         },
+    //         {
+    //             page: 'History',
+    //             path: 'history',
+    //             hasChild: false,
+    //         },
+    //         {
+    //             page: 'Leaderboard',
+    //             path: 'leaderboard',
+    //             hasChild: false,
+    //         },
+    //     ]
+    // },
+    {
+        page: 'Notes',
+        path: 'notes',
+        hasChild: true,
+        icon: <BsPencilSquare/>,
+        child:[
+            {
+                page: 'Notes',
+                path: 'notes',
+                hasChild: false,
+            },
+            {
+                page: 'Folder',
+                path: 'folder',
+                hasChild: false,
+            },
+            {
+                page: 'Archive',
+                path: 'archive',
+                hasChild: false,
+            },
+            {
+                page: 'Trash',
+                path: 'trash',
+                hasChild: false,
+            },
+        ]
+    },
+] 
 
 
 const NavItems = ({ onClick }) => {
-    const navItems = [
-        {
-            page: 'KIS',
-            path: 'kis',
-            hasChild: false,
-            icon: <BsListCheck/>
-        },
-        {
-            page: 'Pomodoro',
-            path: 'pomodoro',
-            hasChild: false,
-            icon: <RiTimerFlashLine/>
-        },
-        // {
-        //     page: '21 Days Challenge',
-        //     path: '21days',
-        //     hasChild: true,
-        //     icon: <BsTrophy/>,
-        //     child:[
-        //         {
-        //             page: 'Challenge',
-        //             path: 'challnge',
-        //             hasChild: false,
-        //         },
-        //         {
-        //             page: 'History',
-        //             path: 'history',
-        //             hasChild: false,
-        //         },
-        //         {
-        //             page: 'Leaderboard',
-        //             path: 'leaderboard',
-        //             hasChild: false,
-        //         },
-        //     ]
-        // },
-        {
-            page: 'Notes',
-            path: 'notes',
-            hasChild: true,
-            icon: <BsPencilSquare/>,
-            child:[
-                {
-                    page: 'Notes',
-                    path: 'notes',
-                    hasChild: false,
-                },
-                {
-                    page: 'Folder',
-                    path: 'folder',
-                    hasChild: false,
-                },
-                {
-                    page: 'Archive',
-                    path: 'archive',
-                    hasChild: false,
-                },
-                {
-                    page: 'Trash',
-                    path: 'trash',
-                    hasChild: false,
-                },
-            ]
-        },
-    ] 
 
     const {colorMode} = useColorMode()
     const activeLinkColor = colorMode === 'light' ? 'green.500' : 'green.300'
+    const { logOut } = useAuth()
+
+    const handleLogOut = () => {
+        logOut()
+    }
     
   return (
     <Flex direction='column' justifyContent='space-between' gap='32' w='100%'>
@@ -127,7 +133,7 @@ const NavItems = ({ onClick }) => {
             })} 
         </Flex>
         <Spacer/>
-        <Button colorScheme='red'>Log Out</Button>
+        <Button colorScheme='red' onClick={handleLogOut}>Log Out</Button>
     </Flex>
 
   )

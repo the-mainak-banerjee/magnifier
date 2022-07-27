@@ -3,14 +3,17 @@ import React, { useCallback, useState } from 'react'
 import { BsFillCaretRightFill, BsFillGearFill } from 'react-icons/bs'
 import { AiFillPauseCircle } from 'react-icons/ai'
 import { FaUndo } from 'react-icons/fa'
-import { useKis, usePomo } from '../../context'
+import { useAuth, usePomo } from '../../context'
 import { PomodoroSettings } from './PomodoroSettings'
+import { updateData } from '../../backend/controllers/TaskControllers'
+import { updateUser } from '../../backend/controllers/UserControllers'
 
 export const PomodoroContainer = ({ pomoContainerRef,addTaskRef }) => { 
     const [showSettings,setShowSetings] = useState(false)
     const { colorMode } = useColorMode()
-    const { focus,startFocus,shortBreak,startShortBreak, longBreak, startLongBreak, pause,setPause,reset,setReset, pomoSec, pomoMin, pomodoroTask,setPomodoroTask, totalPomo, dispatch: pomoDispatch } = usePomo()
-    const {dispatch : kisDispatch} = useKis()
+    const { focus,startFocus,shortBreak,startShortBreak, longBreak, startLongBreak, pause,setPause,reset,setReset, pomoSec, pomoMin, pomodoroTask, totalPomo } = usePomo()
+    // const {dispatch : kisDispatch} = useKis()
+    const { user } = useAuth()
 
 
     const handleReset = () => {
@@ -27,11 +30,19 @@ export const PomodoroContainer = ({ pomoContainerRef,addTaskRef }) => {
     }
 
     const handleComplete = () => {
-        pomoDispatch({ type: 'COMPLETE', payload: pomodoroTask?.id})
-        setPomodoroTask(null)
+        // pomoDispatch({ type: 'COMPLETE', payload: pomodoroTask?.id})
+
+        let updatedData = {
+            completed: !pomodoroTask.completed
+          }
+    
+        updateData(user,'PomoTask',  pomodoroTask?.id, updatedData)
+        updateUser(user.uid,{pomoDoroTask: {}})
+        // setPomodoroTask(null)
 
         if(pomodoroTask.taskType === 'KIS'){
-            kisDispatch({ type: 'COMPLETE' , payload: pomodoroTask?.id}) 
+            // kisDispatch({ type: 'COMPLETE' , payload: pomodoroTask?.id}) 
+            updateData(user,'KISTask', pomodoroTask?.id, updatedData)
         }
 
         handleReset()
@@ -108,7 +119,7 @@ export const PomodoroContainer = ({ pomoContainerRef,addTaskRef }) => {
                         Reset
                 </Button>
             </ButtonGroup>}
-            <Text fontSize='xl'>Total Pomodoros:- { `25mins: ${totalPomo.short}, 35mins: ${totalPomo.medium}`}</Text>
+            <Text fontSize='xl'>Total Pomodoros:- { `25mins: ${totalPomo?.short}, 35mins: ${totalPomo?.medium}`}</Text>
         </VStack>
       </Container>
     </>

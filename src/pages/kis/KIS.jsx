@@ -13,6 +13,7 @@ export const KIS = () => {
     setShowKisHistory(prevData => !prevData)
   }
 
+
   return (
     <>
         <Flex>
@@ -29,7 +30,7 @@ export const KIS = () => {
               <Divider/>
               <TaskContainer
                 openTaskModal={onOpen}
-                dateValue={dateValue}
+                dateValue={dateValue.toLocaleDateString()}
               />
               <Divider/>
               {showKisHistory 

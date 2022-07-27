@@ -1,11 +1,3 @@
-const getFoldersNotes = (folderId,notes) => {
-    if(folderId === null){
-        return notes
-    }else{
-        return notes?.filter(item => item.folderId === folderId)
-    }
-}
-
 const getUserSearchedNotes = (searchTerm,notes) => {
     if(searchTerm){
         return notes.filter(item => item.content.toLowerCase().includes(searchTerm.toLowerCase()) || item.title.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -13,6 +5,17 @@ const getUserSearchedNotes = (searchTerm,notes) => {
         return notes
     }
 }
+
+
+
+const getFoldersNotes = (folderId,notes) => {
+    if(folderId === null){
+        return notes
+    }else{
+        return notes?.filter(item => item.folder?.id === folderId)
+    }
+}
+
 
 const getOthersNote = (notes) => {
     return notes?.filter(item => !item.isArchived && !item.isTrashed)

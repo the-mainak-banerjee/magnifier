@@ -2,6 +2,7 @@ import { v4 as uuid } from 'uuid'
 
 export const taskReducer = (state,action) => {
     switch(action.type){
+
         case 'ADD':
             return[
                 ...state,
@@ -9,7 +10,7 @@ export const taskReducer = (state,action) => {
                     id: uuid(),
                     name: action.payload,
                     taskType: 'KIS',
-                    completed: false
+                    completed: false,
                 }
             ]
       

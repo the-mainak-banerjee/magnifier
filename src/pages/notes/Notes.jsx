@@ -1,24 +1,31 @@
-import { Divider, Flex, Text } from '@chakra-ui/react'
+import { Divider, Flex, Icon, Text, useColorMode } from '@chakra-ui/react'
 import React from 'react'
+import { BsPencilSquare } from 'react-icons/bs'
 import { BodyWrapper, NotesAddNewSec, NotesContainer, NotesHeaderSec, NotesPinnedSec, Sidebar } from '../../components'
 import { useNotes } from '../../context'
 
 export const Notes = () => {
 
     const { othersNote, pinnedNotes, unPinnedNotes } = useNotes()
+    const { colorMode } = useColorMode()
 
   return (
     <>
         <Flex>
             <Sidebar/>
             <BodyWrapper>
-                <NotesHeaderSec notes={othersNote}/>
+                <NotesHeaderSec/>
                 <Divider/>
                 <NotesAddNewSec/>
-                <Divider/>
                 {pinnedNotes.length>0 && <NotesPinnedSec/>}
                 {pinnedNotes?.length > 0 && <Text fontSize='md' fontWeight='semiBold' ml='6'>OTHERS</Text>}
-                <NotesContainer notes={unPinnedNotes}/>
+                {othersNote?.length > 0
+                ? <NotesContainer notes={unPinnedNotes}/>
+                : <Flex flexDirection='column' h='50vh' alignItems='center' justifyContent='center'>
+                    <Icon as={BsPencilSquare} w='20' h='20' color={colorMode === 'light' ? 'gray.200' : 'gray.700'}/>
+                    <Text color='gray.500'>Your Notes Will Apppear Here</Text>
+                  </Flex>
+                }
             </BodyWrapper>
         </Flex>
     </>

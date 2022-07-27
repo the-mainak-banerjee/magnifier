@@ -3,26 +3,30 @@ import React, { useState } from 'react'
 import { BsCheckLg, BsFillCheckCircleFill, BsFillPenFill, BsFillTrashFill } from 'react-icons/bs'
 import { AiFillCloseCircle } from 'react-icons/ai'
 import { FaUndo } from 'react-icons/fa'
-import { useKis } from '../../context/kis-context'
-import { usePomo } from '../../context'
+import { useAuth, usePomo } from '../../context'
+import { deleteData, updateData } from '../../backend/controllers/TaskControllers'
 
 
 
 export const TaskItem = ({ task, pencil, check, idx }) => {
-  const { dispatch: kisDispatch } = useKis()
-  const { allPomodoroTask, pomodoroTask, setPomodoroTask,  dispatch: pomoDispatch} = usePomo()
+  const { allPomodoroTask, pomodoroTask, setPomodoroTask } = usePomo()
   const [isEditing,setIsEditing] = useState(false)
   const [editableTask,setEditableTask] = useState('')
   const { colorMode } = useColorMode()
+  
+  const { user } = useAuth()
 
   const activeTaskBgColor = colorMode === 'light' ? 'blue.300'  : 'blue.600'
   const completedTaskBgColor = colorMode === 'light' ? 'green.300'  : 'green.600'
 
   const handleDelete = () => {
-      kisDispatch({ type: 'DELETE' , payload: task?.id})
+      // kisDispatch({ type: 'DELETE' , payload: task?.id})
+      
+      deleteData(user,'KISTask', task?.id)
 
       if(allPomodoroTask.some(item => item.id === task.id)){
-        pomoDispatch({ type: 'DELETE' , payload: task?.id})
+        // pomoDispatch({ type: 'DELETE' , payload: task?.id})
+        deleteData(user,'PomoTask', task?.id)
       }  
 
       if(pomodoroTask?.id === task.id){
@@ -32,10 +36,17 @@ export const TaskItem = ({ task, pencil, check, idx }) => {
   }
   
   const handleCompletedtask = () => {
-      kisDispatch({ type: 'COMPLETE', payload: task?.id})
+      // kisDispatch({ type: 'COMPLETE', payload: task?.id})
+
+      let updatedData = {
+        completed: !task.completed
+      }
+
+      updateData(user,'KISTask', task.id, updatedData)
 
       if(allPomodoroTask.some(item => item.id === task.id)){
-        pomoDispatch({ type: 'COMPLETE', payload: task?.id})
+        // pomoDispatch({ type: 'COMPLETE', payload: task?.id})
+        updateData(user,'PomoTask', task.id, updatedData)
       }
 
       if(pomodoroTask?.id === task.id){
@@ -43,12 +54,21 @@ export const TaskItem = ({ task, pencil, check, idx }) => {
       }
   }
 
+  
+
 
   const handleTaskEdit = () => {
-    kisDispatch({ type: 'EDIT', id: task?.id, payload: editableTask })
+    // kisDispatch({ type: 'EDIT', id: task?.id, payload: editableTask })
+
+    const editedData = {
+      name: editableTask
+    }
+
+    updateData(user,'KISTask', task.id, editedData)
 
     if(allPomodoroTask.some(item => item.id === task.id)){
-      pomoDispatch({ type: 'EDIT', id: task?.id, payload: editableTask })
+      // pomoDispatch({ type: 'EDIT', id: task?.id, payload: editableTask })
+      updateData(user,'PomoTask', task.id, editedData)
     }
     
     setIsEditing(prevState => !prevState)

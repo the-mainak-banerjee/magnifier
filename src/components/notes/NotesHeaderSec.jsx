@@ -3,8 +3,9 @@ import React, {  useCallback, useMemo } from 'react'
 import { BiArchiveIn, BiArchiveOut } from 'react-icons/bi'
 import { BsArrowLeft, BsFolderSymlinkFill } from 'react-icons/bs'
 import { FaTrash, FaTrashAlt, FaTrashRestore } from 'react-icons/fa'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import { useNotes } from '../../context'
+import { useNavigate } from 'react-router-dom'
+import { deleteNoteData, updateNoteData } from '../../backend/controllers/NotesControllers'
+import { useAuth, useNotes } from '../../context'
 
 // Custom debounce function
 const debounce = function (func,delay) {
@@ -21,11 +22,11 @@ const debounce = function (func,delay) {
   }
 }
 
-export const NotesHeaderSec = ({ notes }) => {
+export const NotesHeaderSec = () => {
 
-  const [searchParams] = useSearchParams()
   const navigate = useNavigate();
-  const { setUserSearchTerm, selectState, notesDispatch, selectedNotes, setSelectedNotes, onTrashPage, onArchivePage } = useNotes()
+  const { currentFolder, setUserSearchTerm, selectState, selectedNotes, setSelectedNotes, onTrashPage, onArchivePage } = useNotes()
+  const { user } = useAuth()
 
 
   // Set the search functionality
@@ -40,23 +41,31 @@ export const NotesHeaderSec = ({ notes }) => {
   // Handle all actions
 
   const handleArchiveAction = () => {
-    selectedNotes.forEach(item => 
-      notesDispatch({type: 'ARCHIVE', id: item})
-    )
+    selectedNotes.forEach(item => {
+        const data = {
+          isArchived: !item.isArchived,
+          isSelected: false
+      }
+      updateNoteData(user,item.id,data)
+    })
     setSelectedNotes([])
   }
 
   const handleDelete = () => {
     selectedNotes.forEach(item => 
-      notesDispatch({type: 'DELETE', id: item})
+      deleteNoteData(user,item.id)
     )
     setSelectedNotes([])
   }
 
   const handleTrashAction = () => {
-    selectedNotes.forEach(item => 
-      notesDispatch({type: 'TRASH', id: item})
-    )
+      selectedNotes.forEach(item => {
+        const data = {
+          isTrashed: !item.isTrashed,
+          isSelected: false
+      }
+      updateNoteData(user,item.id,data)
+    })
     setSelectedNotes([])
   }
 
@@ -64,20 +73,24 @@ export const NotesHeaderSec = ({ notes }) => {
  
   return (
     <>
-      <Container maxW="container.lg" p='0' mb='4'>
-        {!selectState && <Flex >
-          <HStack>
-            {searchParams.get('q') && <IconButton icon={<BsArrowLeft/>} size='sm' onClick={() => navigate('/notes/folder',{replace:true})}/>}
-            <Heading as='h3' size='xl'>Notes</Heading>
-          </HStack>
+      <Container maxW="container.lg" p='0' mb='8'>
+        {!selectState && <Flex flexDirection={{base:'column' , md:'row'}} gap={{base:'2', md:'0'}}>
+          {currentFolder 
+          ? <HStack>
+              <IconButton icon={<BsArrowLeft/>} size='sm' onClick={() => navigate(-1,{replace:true})}/>
+              <Heading as='h3' size='xl'>{currentFolder.name}</Heading>
+            </HStack>
+          : <Heading as='h3' size='xl'>Notes</Heading>
+          }
           <Spacer/>
-          <HStack w='40%'>
-            <Input type='text' placeholder='Search'  onChange={debouncedInputChange}/>
+          <HStack w={{base: '100%', md:'40%'}}>
+            <Input type='text' placeholder='Search' onChange={debouncedInputChange}/>
           </HStack>
-        </Flex>}
+        </Flex>
+        }
 
         {selectState && <Flex alignItems='center'>
-          <Heading as='h4' size='lg'>Selected</Heading>
+          <Heading as='h4' size='lg'>{selectedNotes.length} Selected</Heading>
           <Spacer/>
           <Flex alignItems='center' gap='2' mb='2'>
             {!onTrashPage && <IconButton size='sm' icon={<BsFolderSymlinkFill/>}/>}

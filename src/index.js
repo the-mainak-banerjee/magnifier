@@ -5,7 +5,7 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import theme from './theme/index'
-import { KisContextProvider, NotesContextProvider, PomodoroContextProvider } from './context';
+import { AuthContextProvider, KisContextProvider, NotesContextProvider, PomodoroContextProvider } from './context';
 
 
 
@@ -15,13 +15,15 @@ root.render(
     <BrowserRouter>
       <ChakraProvider theme={theme}>
         <ColorModeScript initialColorMode={theme.config.initialColorMode}/>
-        <KisContextProvider>
-          <PomodoroContextProvider>
-            <NotesContextProvider>
-              <App/>
-            </NotesContextProvider>
-          </PomodoroContextProvider>
-        </KisContextProvider>
+        <AuthContextProvider>
+          <KisContextProvider>
+            <PomodoroContextProvider>
+              <NotesContextProvider>
+                <App/>
+              </NotesContextProvider>
+            </PomodoroContextProvider>
+          </KisContextProvider>
+        </AuthContextProvider>
       </ChakraProvider>
     </BrowserRouter>
   // </React.StrictMode>

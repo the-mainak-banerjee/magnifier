@@ -1,9 +1,12 @@
 import { createContext, useContext, useEffect, useReducer, useState } from "react"
 import { useLocation, useSearchParams } from "react-router-dom"
 import  { v4 as uuid } from 'uuid'
+import { getAllFolders } from "../backend/controllers/FolderControllers"
+import { getAllNotesData } from "../backend/controllers/NotesControllers"
 import { notesReducer } from "../reducers/notes-reducer"
 import { notesFolderReducer } from "../reducers/notesFolder-reducer"
 import { getArchivedNotes, getPinnedNotes, getTrashedNotes, getOthersNote, getUnPinnedNotes, getFoldersNotes, getUserSearchedNotes } from "../utils/NoteFilters"
+import { useAuth } from "./auth-context"
 
 const NotesContext = createContext()
 
@@ -130,7 +133,11 @@ const initialFolders = [
 const NotesContextProvider =({ children }) => {
 
     const [allNotes, notesDispatch] = useReducer(notesReducer,initialNotes)
-    const [allFolders,foldersDispatch] = useReducer(notesFolderReducer,initialFolders)
+    const [allFolder,foldersDispatch] = useReducer(notesFolderReducer,initialFolders)
+
+    const [allNote,setAllNote] = useState([])
+    const [allFolders,setAllFolders] = useState([])
+    const [currentFolder,setCurrentFolder] = useState('')
 
     const [searchParams] = useSearchParams()
     const location = useLocation()
@@ -143,6 +150,9 @@ const NotesContextProvider =({ children }) => {
     const [onTrashPage,setOnTrashPage] = useState(false)
     const [onArchivePage,setOnArchivePage] = useState(false)
 
+    const { user } = useAuth()
+    const param = searchParams.get('q')
+
 
     // Clearing the search term if page changes
     useEffect(()=> {
@@ -152,12 +162,12 @@ const NotesContextProvider =({ children }) => {
 
     // Maintaining the selected state.
     useEffect(() => {
-        if(allNotes.some(item => item.isSelected)){
+        if(allNote.some(item => item.isSelected)){
             setSelectState(true)
         }else{
             setSelectState(false)
         }
-    },[allNotes])
+    },[allNote])
 
     
     // Finding The Location Of User
@@ -167,9 +177,31 @@ const NotesContextProvider =({ children }) => {
     }, [location])
 
 
+    // Get All Notes from Database
+    useEffect(() => {        
+        const unSub = getAllNotesData('AllNotes', user, setAllNote)
+        
+        return () => unSub && unSub()
+    },[user])
+
+    // Get All Folders from Database
+    useEffect(() => {        
+        const unSub = getAllFolders('NotesFolder', user, setAllFolders)
+        
+        return () => unSub && unSub()
+    },[user])
+
+
+    // Get Current Folder
+    useEffect(() => {
+        setCurrentFolder(allFolders?.find(item => item.id === param))
+    }, [param,allFolders])
+
+
+
     // Filtering The Notes to show into different pages
-    const userSearchedNotes = getUserSearchedNotes(userSearchTerm,allNotes)
-    const foldersNotes = getFoldersNotes(searchParams.get('q'), userSearchedNotes)
+    const userSearchedNotes = getUserSearchedNotes(userSearchTerm,allNote)
+    const foldersNotes = getFoldersNotes(param, userSearchedNotes)
     const othersNote = getOthersNote(foldersNotes)
     const pinnedNotes = getPinnedNotes(othersNote)
     const unPinnedNotes = getUnPinnedNotes(othersNote)
@@ -179,7 +211,7 @@ const NotesContextProvider =({ children }) => {
 
     return (
         <NotesContext.Provider
-            value = {{allNotes, notesDispatch, othersNote, pinnedNotes, unPinnedNotes, archivedNotes, trashedNotes, allFolders, foldersDispatch, userSearchTerm, setUserSearchTerm, selectState, setSelectState, selectedNotes,setSelectedNotes, onTrashPage,onArchivePage}}
+            value = {{allNote, allNotes, notesDispatch, othersNote, pinnedNotes, unPinnedNotes, archivedNotes, trashedNotes, allFolders,allFolder, foldersDispatch, userSearchTerm, setUserSearchTerm, selectState, setSelectState, selectedNotes,setSelectedNotes, onTrashPage,onArchivePage, currentFolder}}
         >
             {children}
         </NotesContext.Provider>

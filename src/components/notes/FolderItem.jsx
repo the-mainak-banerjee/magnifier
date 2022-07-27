@@ -4,12 +4,17 @@ import { useNavigate } from 'react-router-dom'
 import { useNotes } from '../../context'
 import { BsFillPenFill } from 'react-icons/bs'
 import { FaTrash } from 'react-icons/fa'
+import { deleteNoteData } from '../../backend/controllers/NotesControllers'
+import { deleteFolder } from '../../backend/controllers/FolderControllers'
+import { useAuth } from '../../context'
+
 
 export const FolderItem = ({ folder }) => {
 
     const { colorMode } = useColorMode()
     const navigate = useNavigate()
-    const { notesDispatch, foldersDispatch, trashedNotes } = useNotes()
+    const { user } = useAuth()
+    const { trashedNotes } = useNotes()
     const [trashedNotesNumber,setTrashedNotesNumber] = useState()
 
 
@@ -28,11 +33,11 @@ export const FolderItem = ({ folder }) => {
 
     // Delete a folder
     const handleFolderDelete = (folder) => {
-        foldersDispatch({ type: 'DELETE', id:folder.id})
+        deleteFolder(user,folder.id)
 
         // Move all notes of the folder to Trash
         folder.notes?.forEach(item => {
-            notesDispatch({type: 'TRASH', id: item})
+            deleteNoteData(user,item)
         })
     }
 
