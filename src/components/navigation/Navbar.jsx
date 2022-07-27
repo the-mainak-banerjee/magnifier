@@ -3,19 +3,21 @@ import React from 'react'
 import { BsList, BsFillMoonFill, BsSun } from 'react-icons/bs'
 import { useDisclosure } from '@chakra-ui/react'
 import NavItems from './NavItems'
+import { useLocation } from 'react-router-dom'
 
 
 export const Navbar = () => {
     const btnRef = React.useRef()
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { colorMode, toggleColorMode} = useColorMode()
+    const  location  = useLocation()
 
   return (
     <Box as='section' px={[5,10,16]} py={[5,10,6]} bg={colorMode=== 'light' ? 'gray.50' : 'gray.700'}>
       <Flex 
         align='center'
       >
-       <IconButton 
+       {(location.pathname !== '/login' && location.pathname !== '/signup') && <IconButton 
                 aria-label='Show NavBar'
                 icon={<BsList/>}
                 mr='1'
@@ -24,7 +26,7 @@ export const Navbar = () => {
                 ref={btnRef}
                 display={{lg:'none'}}
                 variant='unstyled'
-        />
+        />}
         <Heading as='h3'>Magnifier</Heading>
         <Spacer/>
         <IconButton 
