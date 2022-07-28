@@ -108,7 +108,7 @@ export const TaskContainer = ({ openTaskModal,dateValue }) => {
           <Spacer/>
           <ButtonGroup>
             <Button onClick={openTaskModal} colorScheme='blue'>Edit Task</Button>
-            <Button  colorScheme='green' onClick={handleOpenAlert}>Day Ended</Button>
+            <Button  colorScheme='green' onClick={handleOpenAlert}>End The Day</Button>
           </ButtonGroup>
         </Flex>
       </Container>}
