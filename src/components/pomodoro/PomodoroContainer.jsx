@@ -55,7 +55,7 @@ export const PomodoroContainer = ({ pomoContainerRef,addTaskRef }) => {
 
   return (
     <>
-      <Container maxW="container.lg" py={{base:'2', md:'5'}} px='0' mt='4'>
+      <Container maxW="container.lg" py={{base:'2', md:'5'}} px={{base:'4', md:'0'}} mt='4'>
         <VStack w='full' p={{base:'3', md:'10'}} spacing='5'  border='2px' borderRadius='xl' borderColor={colorMode === 'light' ? 'blue.300'  : 'blue.600'} boxShadow='md' ref={pomoContainerRef}>
             <Flex>
                 <ButtonGroup>
