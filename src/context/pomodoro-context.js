@@ -17,7 +17,7 @@ const PomodoroContextProvider = ( { children }) => {
 
 
     const [timerType, setTimerType] = useState({
-        focus: 2,
+        focus: 25,
         shortBreak: 1,
         longBreak: 60
     })
@@ -91,8 +91,8 @@ const PomodoroContextProvider = ( { children }) => {
 
                             const data = {
                                 date: date,
-                                short: timerType.focus === 1 ? totalPomo?.short ? totalPomo.short + 1 : 1 : totalPomo?.short ?? 0,
-                                long: timerType.focus !== 1 ? totalPomo?.long ? totalPomo.long + 1 : 1 : totalPomo?.long ?? 0
+                                short: timerType.focus === 25 ? totalPomo?.short ? totalPomo.short + 1 : 1 : totalPomo?.short ?? 0,
+                                long: timerType.focus !== 25 ? totalPomo?.long ? totalPomo.long + 1 : 1 : totalPomo?.long ?? 0
                             }
 
                             addPomodoroData(user,'PomoData', date,data)
@@ -102,7 +102,7 @@ const PomodoroContextProvider = ( { children }) => {
                             if(pomodoroTask !== {}){
                                 let activeTask = allPomodoroTask?.find(item => item.id === pomodoroTask.id)
 
-                                let updatedData = timerType.focus === 1 ? {usedPomodoroNo:{...activeTask?.usedPomodoroNo, short: activeTask?.usedPomodoroNo?.short + 1} } : {usedPomodoroNo:{...activeTask?.usedPomodoroNo, medium: activeTask?.usedPomodoroNo?.medium + 1} }
+                                let updatedData = timerType.focus === 25 ? {usedPomodoroNo:{...activeTask?.usedPomodoroNo, short: activeTask?.usedPomodoroNo?.short + 1} } : {usedPomodoroNo:{...activeTask?.usedPomodoroNo, medium: activeTask?.usedPomodoroNo?.medium + 1} }
                                 
                                 updateData(user,'PomoTask', pomodoroTask.id, updatedData)
                             }

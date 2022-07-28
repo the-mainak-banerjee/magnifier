@@ -4,7 +4,7 @@ import { usePomo } from '../../context'
 
 export const PomodoroSettings = ({ hanleSettingVisibility }) => {
     const [formData, setFormData] = useState({
-        focus: 1,
+        focus: 25,
         shortBreak: 5
     })
 

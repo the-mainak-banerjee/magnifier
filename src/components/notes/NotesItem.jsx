@@ -125,7 +125,7 @@ export const NotesItem = ({ note }) => {
         <Text fontSize='md' w='85%'>{trunCateString(note)}</Text>
 
         {(!actionsVisibility && !selectState) && <Text position='absolute' bottom='2' right='2'>Created At:{note.date} </Text>}
-        {(!actionsVisibility && !selectState) && <Badge position='absolute' top='2' right='2'>{note.folder?.name} </Badge>}
+        {(!actionsVisibility && !selectState) && <Badge colorScheme='blue' position='absolute' top='2' right='2'>{note.folder?.name} </Badge>}
 
         {(actionsVisibility && !selectState) && <Flex alignItems='center' gap='2' mb='2'mt='8' position='absolute' bottom='2' right='2'>
             {!onTrashPage && !onArchivePage && <IconButton size='sm' icon={<BsFolderSymlinkFill/>} onClick={onOpen}/>}
