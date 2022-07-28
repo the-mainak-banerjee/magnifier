@@ -11,7 +11,7 @@ import { addData } from '../../backend/controllers/TaskControllers'
 export const AddTaskModal = ({ isOpen, onClose, dateValue, onChange }) => {
     const initialRef = React.useRef(null)
     const [formData, setFormData] = useState('')
-    const { kisOfTheDay,dispatch } = useKis()
+    const { kisOfTheDay } = useKis()
 
     const [loading,setLoading] = useState(false)
     const { user } = useAuth()
@@ -22,21 +22,6 @@ export const AddTaskModal = ({ isOpen, onClose, dateValue, onChange }) => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault()
-        dispatch({ type: 'ADD' , payload: formData})
-
-        // setLoading(true)
-        // try{
-        //   await setDoc(doc(db,'users',`${user.uid}`,'KISTask',`${uuid()}`), {
-        //     name: formData,
-        //     taskType: 'KIS',
-        //     completed: false,
-        // })
-        //   setLoading(false)
-        //   setFormData('')
-        // }catch(error){
-        //   console.log(error)
-        //   setLoading(false)
-        // }
 
         const data = {
           name: formData,

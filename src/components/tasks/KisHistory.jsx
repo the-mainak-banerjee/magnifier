@@ -12,7 +12,7 @@ export const KisHistory = ({ handleKisHistoryDisplay }) => {
             <Flex align='center' gap={{base:'2', md:'0'}} direction={{base:'column', md:'row'}}>
                 <Box textAlign={{base:'center',md:'left'}}>        
                     <Text fontSize={{base:'xl', md:'2xl'}}>KIS History</Text>
-                    <Text fontSize='sm'>(This Will Be Deleted After 1 Month.)</Text>
+                    {/* <Text fontSize='sm'>(This Will Be Deleted After 1 Month.)</Text> */}
                 </Box>
                 <Spacer/>
                 <Button onClick={handleKisHistoryDisplay}>Hide KIS History</Button>

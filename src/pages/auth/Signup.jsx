@@ -69,7 +69,8 @@ export const Signup = () => {
         alignItems="center"
       >
         <Avatar bg={blueColor} />
-        <Heading color={blueColor}>Welcome</Heading>
+        <Heading color={blueColor}>Create Account</Heading>
+        <Text fontSize='lg' textAlign='center' px='4'> Join Magnifier To Maintain A Laser Like Focus &#38; Be Productive </Text>
         <Box minW={{ base: "90%", md: "468px" }}>
           <form>
             <Stack
@@ -150,7 +151,7 @@ export const Signup = () => {
       </Stack>
       <Box>
         Already Have An Account?{" "}
-        <Link as={ReachLink} to='/login' color={blueColor} href="#">
+        <Link as={ReachLink} to='/' color={blueColor} href="#">
           Log In
         </Link>
       </Box>

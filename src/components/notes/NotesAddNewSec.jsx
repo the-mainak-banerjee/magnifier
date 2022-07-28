@@ -22,6 +22,7 @@ export const NotesAddNewSec = () => {
     const noteId = titleFormData.id ?? uuid()
 
     const data = {
+      date: new Date().toDateString(),
       title: titleFormData?.title || 'Untitled',
       content: '',
       isPinned: false,

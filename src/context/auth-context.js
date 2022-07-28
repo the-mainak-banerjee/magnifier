@@ -28,7 +28,7 @@ const AuthContextProvider = ({ children }) => {
         await signOut(auth)
         setUserTocken(null)
         localStorage.removeItem('userId')
-        navigate('/login', { replace: true})  
+        navigate('/', { replace: true})  
         if(autoLogoutTimer){
             clearTimeout(autoLogoutTimer)
         }

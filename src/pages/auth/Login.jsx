@@ -67,6 +67,7 @@ export const Login = () => {
       >
         <Avatar bg={blueColor} />
         <Heading color={blueColor}>Welcome</Heading>
+        <Text fontSize='lg' textAlign='center' px='4'>Get Back To Your Account And Start Focusing On Your Goal</Text>
         <Box minW={{ base: "90%", md: "468px" }}>
           <form>
             <Stack
