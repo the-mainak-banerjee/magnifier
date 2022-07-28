@@ -1,9 +1,11 @@
-import { Box, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerOverlay, Flex, Heading, IconButton, Spacer, useColorMode } from '@chakra-ui/react'
+import { Box, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerOverlay, Flex, Heading, IconButton, Link, Spacer, useColorMode } from '@chakra-ui/react'
 import React from 'react'
 import { BsList, BsFillMoonFill, BsSun } from 'react-icons/bs'
 import { useDisclosure } from '@chakra-ui/react'
 import NavItems from './NavItems'
-import { useLocation } from 'react-router-dom'
+import { useLocation, Link as ReachLink } from 'react-router-dom'
+import { FaUserAlt } from 'react-icons/fa'
+import { useAuth } from '../../context'
 
 
 export const Navbar = () => {
@@ -11,6 +13,7 @@ export const Navbar = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { colorMode, toggleColorMode} = useColorMode()
     const  location  = useLocation()
+    const {userTocken} = useAuth()
 
   return (
     <Box as='section' px={[5,10,16]} py={[5,10,6]} position='fixed' bg={colorMode=== 'light' ? 'gray.50' : 'gray.700'} w='full' zIndex='sticky'>
@@ -29,13 +32,23 @@ export const Navbar = () => {
         />}
         <Heading as='h3'>Magnifier</Heading>
         <Spacer/>
-        <IconButton 
-            aria-label='Change To Dark Mode'
-            variant='unstyle'
-            size='xl'
-            icon={colorMode === 'light' ? <BsFillMoonFill/> : <BsSun/>}
-            onClick={toggleColorMode}
-        />
+        <Flex alignItems='center' justifyContent='center' gap='2'>
+          <IconButton 
+              aria-label='Change To Dark Mode'
+              variant='unstyle'
+              size='xl'
+              icon={colorMode === 'light' ? <BsFillMoonFill/> : <BsSun/>}
+              onClick={toggleColorMode}
+          />
+          {userTocken && <Link as={ReachLink} to='/profile'>
+            <IconButton 
+                aria-label='Show User Profile'
+                variant='unstyle'
+                size='xl'
+                icon={<FaUserAlt/>}
+            />
+          </Link>}
+        </Flex>
       </Flex>
       {/* <Show breakpoint='(max-width: 760px)'> */}
         <Drawer

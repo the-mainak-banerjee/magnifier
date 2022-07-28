@@ -1,6 +1,6 @@
 import {Navbar, PrivateRoute, RestrictedRoute} from './components';
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { CreateNotes, KIS, Pomodoro, Notes, Trash, Archive, Folder} from './pages';
+import { CreateNotes, KIS, Pomodoro, Notes, Trash, Archive, Folder, Profile} from './pages';
 import { Signup } from './pages/auth/Signup';
 import { Login } from './pages/auth/Login';
 
@@ -22,6 +22,7 @@ function App() {
           <Route path='/notes/archive' element={<Archive/>}/>
           <Route path='/notes/trash' element={<Trash/>}/>
           <Route path='/notes/folder' element={<Folder/>}/>
+          <Route path='/profile' element={<Profile/>}/>
         </Route>
       </Routes>
     </>

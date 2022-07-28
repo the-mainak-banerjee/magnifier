@@ -119,7 +119,7 @@ export const PomodoroContainer = ({ pomoContainerRef,addTaskRef }) => {
                         Reset
                 </Button>
             </ButtonGroup>}
-            <Text fontSize='xl'>Total Pomodoros:- { `25mins: ${totalPomo?.short}, 35mins: ${totalPomo?.medium}`}</Text>
+            {totalPomo && <Text fontSize='xl' textAlign='center'>Total Pomodoros:- { `25mins: ${totalPomo?.short}, 35mins: ${totalPomo?.long}`}</Text>}
         </VStack>
       </Container>
     </>

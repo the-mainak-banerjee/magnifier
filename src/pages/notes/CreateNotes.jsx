@@ -7,7 +7,7 @@ export const CreateNotes = () => {
 
   return (
     <>
-      <Box as='section' px={[5,10,16]} py={[5,10,6]} >
+      <Box as='section' px={[5,10,16]} py='6.5rem'  >
         <NotesEditor/>
       </Box>
     </>

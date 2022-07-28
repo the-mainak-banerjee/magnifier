@@ -11,10 +11,13 @@ export const createUser = async (docRef,data) => {
 }
 
 // Update User Database
-export const updateUser = async (docRef,data) => {
+export const updateUser = async (docRef,data,setLoading) => {
+    setLoading(true)
     try{
         await updateDoc(doc(db, 'users', `${docRef}`), data)
     }catch(error){
         console.log(error)
+    }finally{
+        setLoading(false)
     }
 }

@@ -51,7 +51,6 @@ const AuthContextProvider = ({ children }) => {
                 userId: userCredentials.user.uid,
                 name: fullName,
                 email: email,
-                totalPomoOfTheDay: {date:new Date().toDateString(), short:0, medium:0},
                 pomoDoroTask:{},
                 dateCreated: Date.now()
             })

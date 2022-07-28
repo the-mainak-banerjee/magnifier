@@ -1,4 +1,5 @@
 import { createContext, useContext,  useEffect, useMemo, useState } from "react";
+import { addPomodoroData, getPerDayPomoData } from "../backend/controllers/PomodoroControllers";
 import { getData, updateData } from "../backend/controllers/TaskControllers";
 import { updateUser } from "../backend/controllers/UserControllers";
 import useActiveUser from "../hooks/useActiveUser";
@@ -53,17 +54,17 @@ const PomodoroContextProvider = ( { children }) => {
 
     useEffect(() => {
         setPomodoroTask(accountDetails?.pomoDoroTask)
-        setTotalPomo(accountDetails?.totalPomoOfTheDay)
-    }, [accountDetails])
+        // setTotalPomo(accountDetails?.totalPomoOfTheDay)
+        getPerDayPomoData(user,date,setTotalPomo)
+    }, [accountDetails,user,date])
 
-
+    // console.log(pomodoroTask)
 
     // Change The Total Pomodoro Number Of The day to 0 if date changes
 
     useEffect(() => {
         if(user){
             updateUser(user?.uid, {
-                totalPomoOfTheDay: {date:date, short:0, medium:0},
                 pomoDoroTask:{},
             })
         }
@@ -84,13 +85,21 @@ const PomodoroContextProvider = ( { children }) => {
                         setMin(min-1)
                     }else{
                         if(focus){
-                            let updatedPomoNo = timerType.focus === 1 ? {totalPomoOfTheDay: {...accountDetails.totalPomoOfTheDay, short: accountDetails?.totalPomoOfTheDay?.short + 1}} : {totalPomoOfTheDay: {...accountDetails.totalPomoOfTheDay, medium: accountDetails?.totalPomoOfTheDay?.medium + 1}}
+                            // let updatedPomoNo = timerType.focus === 1 ? {totalPomoOfTheDay: {...accountDetails.totalPomoOfTheDay, short: accountDetails?.totalPomoOfTheDay?.short + 1}} : {totalPomoOfTheDay: {...accountDetails.totalPomoOfTheDay, medium: accountDetails?.totalPomoOfTheDay?.medium + 1}}
 
-                            updateUser(user.uid,updatedPomoNo)
+                            // updateUser(user.uid,updatedPomoNo)
+
+                            const data = {
+                                date: date,
+                                short: timerType.focus === 1 ? totalPomo?.short ? totalPomo.short + 1 : 1 : totalPomo?.short ?? 0,
+                                long: timerType.focus !== 1 ? totalPomo?.long ? totalPomo.long + 1 : 1 : totalPomo?.long ?? 0
+                            }
+
+                            addPomodoroData(user,'PomoData', date,data)
 
                             startShortBreak()
 
-                            if(pomodoroTask){
+                            if(pomodoroTask !== {}){
                                 let activeTask = allPomodoroTask?.find(item => item.id === pomodoroTask.id)
 
                                 let updatedData = timerType.focus === 1 ? {usedPomodoroNo:{...activeTask?.usedPomodoroNo, short: activeTask?.usedPomodoroNo?.short + 1} } : {usedPomodoroNo:{...activeTask?.usedPomodoroNo, medium: activeTask?.usedPomodoroNo?.medium + 1} }
