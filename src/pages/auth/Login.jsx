@@ -134,7 +134,7 @@ export const Login = () => {
       </Stack>
       <Box>
         New to us?{" "}
-        <Link as={ReachLink} to='/signup' color={blueColor} href="#">
+        <Link as={ReachLink} to='/' color={blueColor} href="#">
           Sign Up
         </Link>
       </Box>

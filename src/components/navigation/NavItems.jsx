@@ -65,7 +65,7 @@ const NavItems = ({ onClick }) => {
 
     const handleLogOut = () => {
         logOut()
-        onClick()
+        onClick && onClick()
     }
     
   return (

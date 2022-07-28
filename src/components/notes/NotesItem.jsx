@@ -1,4 +1,4 @@
-import { Button, Container, Flex, IconButton, Text, useColorMode, useDisclosure, useToast } from '@chakra-ui/react'
+import { Badge, Button, Container, Flex, IconButton, Text, useColorMode, useDisclosure, useToast } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { BsCheckCircleFill, BsFillPinFill, BsFolderSymlinkFill, BsPin } from 'react-icons/bs'
 import { BiArchiveIn, BiArchiveOut } from 'react-icons/bi'
@@ -11,12 +11,11 @@ import { NewFolderModal } from './NewFolderModal'
 export const NotesItem = ({ note }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { colorMode } = useColorMode()
-    const { foldersDispatch, selectState, setSelectedNotes, onTrashPage, onArchivePage } = useNotes()
+    const { selectState, setSelectedNotes, onTrashPage, onArchivePage } = useNotes()
     const [actionsVisibility, setActionsVisibility] = useState(false)
     const navigate = useNavigate()
     const { user } = useAuth()
     const toast = useToast()
-
 
 
     // Create truncate string
@@ -88,7 +87,7 @@ export const NotesItem = ({ note }) => {
         deleteNoteData(user,note.id)
 
         // Remove the note from Folder
-        foldersDispatch({type: 'DELETENOTE', fileId: note.id, folderId: note.folderId})  
+        // foldersDispatch({type: 'DELETENOTE', fileId: note.id, folderId: note.folderId})  
         
         showToast('Note Deleted Successfully')
     }
@@ -125,7 +124,8 @@ export const NotesItem = ({ note }) => {
 
         <Text fontSize='md' w='85%'>{trunCateString(note)}</Text>
 
-        {(!actionsVisibility && !selectState) && <Text  position='absolute' bottom='2' right='2'>Created At:{note.date} </Text>}
+        {(!actionsVisibility && !selectState) && <Text position='absolute' bottom='2' right='2'>Created At:{note.date} </Text>}
+        {(!actionsVisibility && !selectState) && <Badge position='absolute' top='2' right='2'>{note.folder?.name} </Badge>}
 
         {(actionsVisibility && !selectState) && <Flex alignItems='center' gap='2' mb='2'mt='8' position='absolute' bottom='2' right='2'>
             {!onTrashPage && !onArchivePage && <IconButton size='sm' icon={<BsFolderSymlinkFill/>} onClick={onOpen}/>}

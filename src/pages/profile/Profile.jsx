@@ -138,7 +138,7 @@ const Profile = () => {
                                 </Td>
                                 <Td>
                                    <Text>
-                                   {task?.isCompleted ? 'Complete' : 'Not Complete'}
+                                   {task?.completed ? 'Complete' : 'Not Complete'}
                                   </Text>
                                 </Td>
                             </Tr>

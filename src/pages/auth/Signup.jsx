@@ -151,7 +151,7 @@ export const Signup = () => {
       </Stack>
       <Box>
         Already Have An Account?{" "}
-        <Link as={ReachLink} to='/' color={blueColor} href="#">
+        <Link as={ReachLink} to='/login' color={blueColor} href="#">
           Log In
         </Link>
       </Box>
