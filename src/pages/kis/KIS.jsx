@@ -4,7 +4,7 @@ import { AddTaskModal, BodyWrapper, KisHistory, Sidebar, TaskContainer } from '.
 
 
 
-export const KIS = () => {
+const KIS = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()  
   const [dateValue, onChange] = useState(new Date())
   const [showKisHistory, setShowKisHistory] = useState(false)
@@ -50,3 +50,6 @@ export const KIS = () => {
 }
 
 
+
+
+export default KIS

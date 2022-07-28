@@ -4,7 +4,7 @@ import { BsPencilSquare } from 'react-icons/bs'
 import { BodyWrapper, NotesAddNewSec, NotesContainer, NotesHeaderSec, NotesPinnedSec, Sidebar } from '../../components'
 import { useNotes } from '../../context'
 
-export const Notes = () => {
+const Notes = () => {
 
     const { othersNote, pinnedNotes, unPinnedNotes } = useNotes()
     const { colorMode } = useColorMode()
@@ -31,3 +31,5 @@ export const Notes = () => {
     </>
   )
 }
+
+export default Notes

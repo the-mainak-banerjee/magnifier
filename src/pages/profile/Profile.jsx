@@ -7,7 +7,7 @@ import { getPerDayPomoData } from '../../backend/controllers/PomodoroControllers
 import useActiveUser from '../../hooks/useActiveUser'
 import { updateUser } from '../../backend/controllers/UserControllers'
 
-export const Profile = () => {
+const Profile = () => {
 
     const {user} = useAuth()
     const { accountDetails } = useActiveUser(user?.uid)
@@ -174,3 +174,4 @@ export const Profile = () => {
 }
 
 
+export default Profile

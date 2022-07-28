@@ -3,8 +3,7 @@ import React, { useRef }  from 'react'
 import { Sidebar, BodyWrapper, PomodoroContainer, PomodoroTasks } from '../../components'
 import { usePomo } from '../../context'
 
-
-export const Pomodoro = () => {
+const Pomodoro = () => {
 
   const { focus } = usePomo()
   const addTaskRef = useRef()
@@ -34,3 +33,6 @@ export const Pomodoro = () => {
 }
 
 
+
+
+export default Pomodoro

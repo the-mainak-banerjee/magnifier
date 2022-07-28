@@ -46,6 +46,7 @@ export const Navbar = () => {
                 variant='unstyle'
                 size='xl'
                 icon={<FaUserAlt/>}
+                marginBottom='1'
             />
           </Link>}
         </Flex>
