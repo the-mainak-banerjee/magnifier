@@ -9,6 +9,7 @@ import { useAuth } from '../../context'
 
 
 export const Navbar = () => {
+    
     const btnRef = React.useRef()
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { colorMode, toggleColorMode} = useColorMode()
