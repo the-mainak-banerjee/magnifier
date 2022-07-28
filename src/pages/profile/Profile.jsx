@@ -59,7 +59,7 @@ const Profile = () => {
         <BodyWrapper> 
             <Container maxW="container.lg" p='0' mb='4'>
                 <Heading as='h3' size='xl'>Profile</Heading>
-                <Text>Hi Mainak! Here Is Your Proile Details.</Text>
+                <Text>Hi {accountDetails?.name}! Here Is Your Proile Details.</Text>
             </Container>  
             <Divider/>  
             {!showEditForm 
