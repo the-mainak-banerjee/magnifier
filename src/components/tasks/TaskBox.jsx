@@ -5,7 +5,7 @@ import { TaskItem } from './TaskItem'
 export const TaskBox = ({title, tasks, fallBackText, borderColor}) => {
 
   return (
-    <VStack w='full' p={{base:'3', md:'10'}} spacing='5'  border='2px' borderColor={borderColor} borderRadius='xl' boxShadow='md'>
+    <VStack w='full' mb='4' p={{base:'3', md:'10'}} spacing='5'  border='2px' borderColor={borderColor} borderRadius='xl' boxShadow='md'>
       <Heading as='h4' size='lg' textAlign='center'>{title}</Heading>
       {tasks?.map((task,idx) => {
         return (
