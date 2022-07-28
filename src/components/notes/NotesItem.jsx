@@ -7,11 +7,12 @@ import { FaTrash, FaTrashAlt, FaTrashRestore } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import { deleteNoteData, updateNoteData } from '../../backend/controllers/NotesControllers'
 import { NewFolderModal } from './NewFolderModal'
+import { updateFolderData } from '../../backend/controllers/FolderControllers'
 
 export const NotesItem = ({ note }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { colorMode } = useColorMode()
-    const { selectState, setSelectedNotes, onTrashPage, onArchivePage } = useNotes()
+    const { selectState, setSelectedNotes, onTrashPage, onArchivePage, allFolders } = useNotes()
     const [actionsVisibility, setActionsVisibility] = useState(false)
     const navigate = useNavigate()
     const { user } = useAuth()
@@ -88,9 +89,17 @@ export const NotesItem = ({ note }) => {
 
         // Remove the note from Folder
         // foldersDispatch({type: 'DELETENOTE', fileId: note.id, folderId: note.folderId})  
+
+        const folderRef = allFolders?.find(item => item.id === note.folder.id)
+
+        if(folderRef){
+            updateFolderData(user,note.folder.id,{notes: folderRef.notes?.filter(item => item!== note.id)} )
+        }
+        
         
         showToast('Note Deleted Successfully')
     }
+    
 
     // Select Action handler
     const handleSelectAction = () => {
@@ -125,7 +134,7 @@ export const NotesItem = ({ note }) => {
         <Text fontSize='md' w='85%'>{trunCateString(note)}</Text>
 
         {(!actionsVisibility && !selectState) && <Text position='absolute' bottom='2' right='2'>Created At:{note.date} </Text>}
-        {(!actionsVisibility && !selectState) && <Badge colorScheme='blue' position='absolute' top='2' right='2'>{note.folder?.name} </Badge>}
+        {(!actionsVisibility && !selectState && !onTrashPage) && <Badge colorScheme='blue' position='absolute' top='2' right='2'>{note.folder?.name} </Badge>}
 
         {(actionsVisibility && !selectState) && <Flex alignItems='center' gap='2' mb='2'mt='8' position='absolute' bottom='2' right='2'>
             {!onTrashPage && !onArchivePage && <IconButton size='sm' icon={<BsFolderSymlinkFill/>} onClick={onOpen}/>}
