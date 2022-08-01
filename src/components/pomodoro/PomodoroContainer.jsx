@@ -56,7 +56,7 @@ export const PomodoroContainer = ({ pomoContainerRef,addTaskRef }) => {
   return (
     <>
       <Container maxW="container.lg" py={{base:'2', md:'5'}}  mt='4'>
-        <VStack w='full' p={{base:'3', md:'10'}} spacing='5'  border={{base:'0', lg:'2px'}} borderRadius='xl' borderColor={colorMode === 'light' ? 'blue.300'  : 'blue.600'} boxShadow='md' ref={pomoContainerRef}>
+        <VStack w='full' p={{base:'3', md:'10'}} spacing='5'  border={{base:'0', lg:'2px'}} borderRadius={{base:'0', md:'xl'}} borderColor={colorMode === 'light' ? 'blue.300'  : 'blue.600'} boxShadow={{base:'0' , lg:'md'}} ref={pomoContainerRef}>
             <Flex>
                 <ButtonGroup>
                     <Button colorScheme={focus ? 'green' : 'gray' } onClick={startFocus}>

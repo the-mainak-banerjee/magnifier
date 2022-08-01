@@ -65,7 +65,7 @@ const Profile = () => {
             {!showEditForm 
             ? (
               <Container maxW='container.lg' p='2' my='8'>
-                  <Heading as='h4' size='md' mb='4'>User Details:-</Heading>
+                  <Heading as='h4' size='lg' mb='4'>User Details:-</Heading>
                   <Flex gap='4' mb='2'>
                     <Text>Name: </Text>
                     <Text>{accountDetails?.name}</Text>

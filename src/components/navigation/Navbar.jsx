@@ -40,6 +40,7 @@ export const Navbar = () => {
               size='xl'
               icon={colorMode === 'light' ? <BsFillMoonFill/> : <BsSun/>}
               onClick={toggleColorMode}
+              pr='4'
           />
           {userTocken && <Link as={ReachLink} to='/profile'>
             <IconButton 

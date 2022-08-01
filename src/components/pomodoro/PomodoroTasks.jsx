@@ -6,6 +6,7 @@ import { BsCheckLg,  BsFillPenFill, BsFillTrashFill } from 'react-icons/bs'
 import { FaUndo } from 'react-icons/fa'
 import { addData, deleteData, updateData } from '../../backend/controllers/TaskControllers'
 import { updateUser } from '../../backend/controllers/UserControllers'
+import { serverTimestamp } from 'firebase/firestore'
 
 
 export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
@@ -54,7 +55,8 @@ export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
                 taskType: formData.taskType,
                 completed: false,
                 usedPomodoroNo: {short:0, medium: 0},
-                date: new Date().toDateString()
+                date: new Date().toDateString(),
+                timeStamp: serverTimestamp()
             }
             addData(setLoading,user,'PomoTask', data, formData.id)
 
@@ -74,7 +76,8 @@ export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
                 taskType: kisFormData.taskType,
                 completed: false,
                 usedPomodoroNo: {short:0, medium: 0},
-                date: new Date().toDateString()
+                date: new Date().toDateString(),
+                timeStamp: serverTimestamp()
                 // kisTaskId: kisFormData.id
             }
             addData(setLoading,user,'PomoTask', data, kisFormData.id)
@@ -167,6 +170,8 @@ export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
         setReset(prevState => !prevState)
         pomoContainerRef.current.scrollIntoView()
     }
+
+
       
 
   return (
