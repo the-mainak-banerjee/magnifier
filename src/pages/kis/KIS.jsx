@@ -30,7 +30,8 @@ const KIS = () => {
               <Divider/>
               <TaskContainer
                 openTaskModal={onOpen}
-                dateValue={dateValue.toLocaleDateString()}
+                dateValue={dateValue}
+                onChange={onChange}
               />
               <Divider/>
               {showKisHistory 

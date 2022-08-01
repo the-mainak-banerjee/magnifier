@@ -45,6 +45,7 @@ const PomodoroContextProvider = ( { children }) => {
         return () => unSub && unSub()
     },[user])
 
+    // console.log(allPomodoroTask)
 
     useEffect(() => {
         setTodaysPomodoroTasks(allPomodoroTask.filter(item => item.date === date))

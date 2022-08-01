@@ -4,8 +4,9 @@ import { useAuth, useKis } from '../../context'
 import { TaskBox } from './TaskBox'
 import { addData, deleteData } from '../../backend/controllers/TaskControllers'
 import useActiveUser from '../../hooks/useActiveUser'
+import DatePicker from 'react-date-picker'
 
-export const TaskContainer = ({ openTaskModal,dateValue }) => {
+export const TaskContainer = ({ openTaskModal,dateValue, onChange }) => {
 
   const { colorMode } = useColorMode()
   const { kisHistory, kisOfTheDay, loading: kisDataLoading } = useKis()
@@ -29,6 +30,9 @@ export const TaskContainer = ({ openTaskModal,dateValue }) => {
   //   setActiveTask(state?.filter(item => item.completed === false))
   // }, [state])
 
+  useEffect(() => {
+    setHasErrorInDayEnd(false)
+  }, [dateValue])
 
   const handleOpenAlert = () => {
     setHasErrorInDayEnd(false)
@@ -37,11 +41,11 @@ export const TaskContainer = ({ openTaskModal,dateValue }) => {
 
 
   const handleDayEnd = async () => {
-    if(kisHistory?.some(item => item.date === dateValue)){
+    if(kisHistory?.some(item => item.date === dateValue.toLocaleDateString())){
       setHasErrorInDayEnd(true)
     }else{
       const data = {
-        date:dateValue,
+        date:dateValue.toLocaleDateString(),
         tasks: kisOfTheDay
       }
 
@@ -107,7 +111,7 @@ export const TaskContainer = ({ openTaskModal,dateValue }) => {
           <Text fontSize={{base:'xl', md:'2xl'}}>{`Compleion Rate: ${Math.floor((completedTask?.length / kisOfTheDay?.length) * 100)}%`}</Text>
           <Spacer/>
           <ButtonGroup>
-            <Button onClick={openTaskModal} colorScheme='blue'>Edit Task</Button>
+            <Button onClick={openTaskModal} colorScheme='blue'>{kisOfTheDay?.length === 5 ? 'Edit KIS Taks' : 'Add More Tasks'}</Button>
             <Button  colorScheme='green' onClick={handleOpenAlert}>End The Day</Button>
           </ButtonGroup>
         </Flex>
@@ -116,7 +120,9 @@ export const TaskContainer = ({ openTaskModal,dateValue }) => {
 
       {kisOfTheDay?.length > 0 && showDateEndDetails && <Container maxW="container.lg" p='0' my='4'>
         <VStack>
-          <Text fontSize='lg' textAlign='center'>{hasErrorInDayEnd ? 'You Are Ending The Same Day Multiple Times. Please Cancel this and then click on "Edit Task" Button To Change The Date.' : "Are You Sure You Want To End Your Day? You can't undo this action afterwards."} </Text>
+          <Text>Select The Date You Are Ending.</Text>
+          <DatePicker onChange={onChange} value={dateValue}/>
+          <Text fontSize='lg' textAlign='center'>{hasErrorInDayEnd ? 'You Are Ending The Same Day Multiple Times. Please Change The Date First And Then End The Day.' : `Are You Sure You Want To End The Day - ${dateValue.toLocaleDateString()}? You can't undo this action afterwards.`} </Text>
           <ButtonGroup>
               <Button onClick={() => setShowDateEndDetails(false)} mr='2'>Cancel</Button>
               <Button 

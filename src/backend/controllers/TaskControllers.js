@@ -1,4 +1,4 @@
-import { collection, doc, onSnapshot, setDoc, updateDoc, deleteDoc } from "firebase/firestore"
+import { collection, doc, onSnapshot, setDoc, updateDoc, deleteDoc, orderBy, query } from "firebase/firestore"
 import { db } from "../Firebase"
 import { v4 as uuid } from 'uuid'
 
@@ -13,12 +13,16 @@ export function getData(collectionRef,user,setState,setLoading){
       setLoading && setLoading(false)
         return
     }else{
-        const unsub = onSnapshot(collection(db, `users/${user?.uid}/${collectionRef}`), (doc) => {
-            const dataArr = []
-            doc.forEach(item => {
-               dataArr.push({...item.data(), id:item.id})
-            })
-            setState(dataArr)
+        const unsub = onSnapshot(query(collection(db, `users/${user?.uid}/${collectionRef}`),orderBy('timeStamp', 'asc')) , (querySnapshot) => {
+            // const dataArr = []
+            // doc.forEach(item => {
+            //    dataArr.push({...item.data(), id:item.id})
+            // })
+            const tasks = querySnapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data()
+            }))
+            setState(tasks)
             setLoading && setLoading(false)
         })
         
