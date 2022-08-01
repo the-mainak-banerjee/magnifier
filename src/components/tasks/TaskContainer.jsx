@@ -5,6 +5,7 @@ import { TaskBox } from './TaskBox'
 import { addData, deleteData } from '../../backend/controllers/TaskControllers'
 import useActiveUser from '../../hooks/useActiveUser'
 import DatePicker from 'react-date-picker'
+import { serverTimestamp } from 'firebase/firestore'
 
 export const TaskContainer = ({ openTaskModal,dateValue, onChange }) => {
 
@@ -46,7 +47,8 @@ export const TaskContainer = ({ openTaskModal,dateValue, onChange }) => {
     }else{
       const data = {
         date:dateValue.toLocaleDateString(),
-        tasks: kisOfTheDay
+        tasks: kisOfTheDay,
+        timeStamp: serverTimestamp()
       }
 
       addData(setLoading,user,'KISHistory',data)
