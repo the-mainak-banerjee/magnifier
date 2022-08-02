@@ -3,7 +3,7 @@ import React from 'react'
 import { BsList, BsFillMoonFill, BsSun } from 'react-icons/bs'
 import { useDisclosure } from '@chakra-ui/react'
 import NavItems from './NavItems'
-import { useLocation, Link as ReachLink } from 'react-router-dom'
+import { Link as ReachLink } from 'react-router-dom'
 import { FaUserAlt } from 'react-icons/fa'
 import { useAuth } from '../../context'
 
@@ -13,7 +13,6 @@ export const Navbar = () => {
     const btnRef = React.useRef()
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { colorMode, toggleColorMode} = useColorMode()
-    const  location  = useLocation()
     const {userTocken} = useAuth()
 
   return (
@@ -21,7 +20,7 @@ export const Navbar = () => {
       <Flex 
         align='center'
       >
-       {(location.pathname !== '/login' && location.pathname !== '/signup') && <IconButton 
+     <IconButton 
                 aria-label='Show NavBar'
                 icon={<BsList/>}
                 mr='1'
@@ -30,7 +29,7 @@ export const Navbar = () => {
                 ref={btnRef}
                 display={{lg:'none'}}
                 variant='unstyled'
-        />}
+        />
         <Heading as='h3'>Magnifier</Heading>
         <Spacer/>
         <Flex alignItems='center' justifyContent='center' gap='2'>

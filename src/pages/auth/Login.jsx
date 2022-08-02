@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Flex,
   Heading,
@@ -15,9 +15,10 @@ import {
   InputRightElement,
   useColorMode,
   Text,
-  FormHelperText
+  FormHelperText,
+  useToast
 } from "@chakra-ui/react";
-import { Link as ReachLink } from "react-router-dom"
+import { Link as ReachLink, useLocation } from "react-router-dom"
 import { FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { useAuth } from "../../context";
@@ -26,6 +27,8 @@ const CFaLock = chakra(FaLock);
 const CMdEmail = chakra(MdEmail)
 
 export const Login = () => {
+
+  const location = useLocation()
   const [showPassword, setShowPassword] = useState(false);
   const [formData,setFormData] = useState({
       email: '',
@@ -33,6 +36,7 @@ export const Login = () => {
   })
   const { logIn,loading } = useAuth()
   const { colorMode } = useColorMode()
+  const  toast = useToast()
   const blueColor = colorMode === 'light' ? 'blue.600'  : 'blue.500'
 
   const isValidEmail =formData.email.match(
@@ -50,6 +54,19 @@ export const Login = () => {
   }
 
   const handleShowClick = () => setShowPassword(!showPassword);
+
+
+  useEffect(() => {
+    if(location?.state !== null){
+      toast({
+        title: `Please Login Or SignUp To Access ${location.state?.from?.pathname?.slice(1).toUpperCase()} Feature`
+      })
+    }
+
+    // eslint-disable-next-line
+  },[location.state])
+
+
 
 
   return (

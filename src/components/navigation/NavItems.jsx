@@ -61,7 +61,7 @@ const NavItems = ({ onClick }) => {
 
     const {colorMode} = useColorMode()
     const activeLinkColor = colorMode === 'light' ? 'green.500' : 'green.300'
-    const { logOut } = useAuth()
+    const { logOut, userTocken } = useAuth()
 
     const handleLogOut = () => {
         logOut()
@@ -117,7 +117,7 @@ const NavItems = ({ onClick }) => {
             })} 
         </Flex>
         {/* <Spacer/> */}
-        <Button colorScheme='red' onClick={handleLogOut}>Log Out</Button>
+        {userTocken && <Button colorScheme='red' onClick={handleLogOut}>Log Out</Button>}
     </Flex>
 
   )
