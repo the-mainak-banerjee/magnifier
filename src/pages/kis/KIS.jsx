@@ -6,7 +6,6 @@ import { AddTaskModal, BodyWrapper, KisHistory, Sidebar, TaskContainer } from '.
 
 const KIS = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()  
-  const [dateValue, onChange] = useState(new Date())
   const [showKisHistory, setShowKisHistory] = useState(false)
 
   const handleKisHistoryDisplay = () => {
@@ -30,8 +29,6 @@ const KIS = () => {
               <Divider/>
               <TaskContainer
                 openTaskModal={onOpen}
-                dateValue={dateValue}
-                onChange={onChange}
               />
               <Divider/>
               {showKisHistory 
@@ -41,8 +38,6 @@ const KIS = () => {
                 isOpen={isOpen}
                 onOpen={onOpen}
                 onClose={onClose}
-                dateValue={dateValue}
-                onChange={onChange}
               />
             </BodyWrapper>
         </Flex>
