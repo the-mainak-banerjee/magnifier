@@ -1,13 +1,12 @@
-import { Button, Container, Flex, VStack, Text, Spacer, ButtonGroup, Divider, useColorMode } from '@chakra-ui/react'
+import { Button, Container, Flex, VStack, Text, Spacer, ButtonGroup, Divider, useColorMode, Input } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useAuth, useKis } from '../../context'
 import { TaskBox } from './TaskBox'
 import { addData, deleteData } from '../../backend/controllers/TaskControllers'
 import useActiveUser from '../../hooks/useActiveUser'
-import DatePicker from 'react-date-picker'
 import { serverTimestamp } from 'firebase/firestore'
 
-export const TaskContainer = ({ openTaskModal,dateValue, onChange }) => {
+export const TaskContainer = ({ openTaskModal }) => {
 
   const { colorMode } = useColorMode()
   const { kisHistory, kisOfTheDay, loading: kisDataLoading } = useKis()
@@ -16,9 +15,12 @@ export const TaskContainer = ({ openTaskModal,dateValue, onChange }) => {
 
   const [completedTask, setCompletedTask] = useState([])
   const [activeTask, setActiveTask] = useState([])
+  const [dateValue, setDateValue] = useState('')
   const [showDateEndDetails,setShowDateEndDetails] = useState(false)
   const [hasErrorInDayEnd, setHasErrorInDayEnd] = useState(false)
   const [loading,setLoading] = useState(false)
+
+  console.log(dateValue)
 
   useEffect(() => {
     setCompletedTask(kisOfTheDay?.filter(item => item.completed === true))
@@ -42,11 +44,11 @@ export const TaskContainer = ({ openTaskModal,dateValue, onChange }) => {
 
 
   const handleDayEnd = async () => {
-    if(kisHistory?.some(item => item.date === dateValue.toLocaleDateString())){
+    if(kisHistory?.some(item => item.date === dateValue)){
       setHasErrorInDayEnd(true)
     }else{
       const data = {
-        date:dateValue.toLocaleDateString(),
+        date:dateValue,
         tasks: kisOfTheDay,
         timeStamp: serverTimestamp()
       }
@@ -123,8 +125,9 @@ export const TaskContainer = ({ openTaskModal,dateValue, onChange }) => {
       {kisOfTheDay?.length > 0 && showDateEndDetails && <Container maxW="container.lg" p='0' my='4'>
         <VStack>
           <Text>Select The Date You Are Ending.</Text>
-          <DatePicker onChange={onChange} value={dateValue}/>
-          <Text fontSize='lg' textAlign='center'>{hasErrorInDayEnd ? 'You Are Ending The Same Day Multiple Times. Please Change The Date First And Then End The Day.' : `Are You Sure You Want To End The Day - ${dateValue.toLocaleDateString()}? You can't undo this action afterwards.`} </Text>
+          {/* <DatePicker onChange={onChange} value={dateValue} className="react-datapicker__input-text"/> */}
+          <Input type='date' onChange={(e) => setDateValue(e.target.value)}/>
+          <Text fontSize='lg' textAlign='center'>{hasErrorInDayEnd ? 'You Are Ending The Same Day Multiple Times. Please Change The Date First And Then End The Day.' : `Are You Sure You Want To End The Day - ${dateValue}? You can't undo this action afterwards.`} </Text>
           <ButtonGroup>
               <Button onClick={() => setShowDateEndDetails(false)} mr='2'>Cancel</Button>
               <Button 

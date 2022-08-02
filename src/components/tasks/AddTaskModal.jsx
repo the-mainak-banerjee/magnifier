@@ -9,7 +9,7 @@ import { serverTimestamp } from 'firebase/firestore'
 
 
 
-export const AddTaskModal = ({ isOpen, onClose, dateValue }) => {
+export const AddTaskModal = ({ isOpen, onClose }) => {
     const initialRef = React.useRef(null)
     const [formData, setFormData] = useState('')
     const { kisOfTheDay } = useKis()
@@ -57,7 +57,7 @@ export const AddTaskModal = ({ isOpen, onClose, dateValue }) => {
               <Flex direction='column'>
                 {/* <DatePicker onChange={onChange} value={dateValue}/> */}
                 <Textarea ref={initialRef} placeholder='Read Book' onChange={handleInputChange} value={formData} mt='4' />
-                <Button colorScheme='green' mt='2' onClick={handleFormSubmit} disabled={!formData || !dateValue} isLoading={loading} loadingText='Adding Task...'>Add Task</Button>
+                <Button colorScheme='green' mt='2' onClick={handleFormSubmit} disabled={!formData} isLoading={loading} loadingText='Adding Task...'>Add Task</Button>
               </Flex>
             </FormControl>
             :   <Center>
