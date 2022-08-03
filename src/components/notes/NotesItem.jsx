@@ -141,7 +141,7 @@ export const NotesItem = ({ note }) => {
             {!onTrashPage && <IconButton size='sm' icon={note.isArchived ? <BiArchiveOut/> : <BiArchiveIn/>} onClick={handleArchiveAction}/>}
             {onTrashPage && <IconButton size='sm' icon={<FaTrash/>} onClick={handleDelete}/>}
             <IconButton size='sm' icon={note.isTrashed ? <FaTrashRestore/> : <FaTrashAlt/>} onClick={handleTrashAction}/>
-            {!onTrashPage && <Button size='sm' onClick={handleViewNote}>View</Button>}
+            {!onTrashPage && <Button size='sm' colorScheme='blue' onClick={handleViewNote}>View</Button>}
         </Flex>}
         
         <NewFolderModal
