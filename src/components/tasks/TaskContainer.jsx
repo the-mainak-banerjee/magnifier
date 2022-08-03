@@ -20,8 +20,6 @@ export const TaskContainer = ({ openTaskModal }) => {
   const [hasErrorInDayEnd, setHasErrorInDayEnd] = useState(false)
   const [loading,setLoading] = useState(false)
 
-  console.log(dateValue)
-
   useEffect(() => {
     setCompletedTask(kisOfTheDay?.filter(item => item.completed === true))
     setActiveTask(kisOfTheDay?.filter(item => item.completed === false))
@@ -124,7 +122,7 @@ export const TaskContainer = ({ openTaskModal }) => {
 
       {kisOfTheDay?.length > 0 && showDateEndDetails && <Container maxW="container.lg" p='0' my='4'>
         <VStack>
-          <Text>Select The Date You Are Ending.</Text>
+          <Text fontWeight='bold' fontSize='xl' color={colorMode === 'light' ? 'red' : 'red.300'}>Select The Date You Are Ending.</Text>
           {/* <DatePicker onChange={onChange} value={dateValue} className="react-datapicker__input-text"/> */}
           <Input type='date' onChange={(e) => setDateValue(e.target.value)}/>
           <Text fontSize='lg' textAlign='center'>{hasErrorInDayEnd ? 'You Are Ending The Same Day Multiple Times. Please Change The Date First And Then End The Day.' : `Are You Sure You Want To End The Day - ${dateValue}? You can't undo this action afterwards.`} </Text>
@@ -133,7 +131,7 @@ export const TaskContainer = ({ openTaskModal }) => {
               <Button 
                 colorScheme='red' 
                 onClick={handleDayEnd} 
-                disabled={hasErrorInDayEnd} 
+                disabled={hasErrorInDayEnd || !dateValue} 
                 isLoading={loading} 
                 loadingText='Ending...'
               >
