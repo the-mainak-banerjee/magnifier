@@ -1,7 +1,7 @@
 import { Container, Flex, Heading, HStack, IconButton, Input, Spacer, useToast } from '@chakra-ui/react'
 import React, {  useCallback, useMemo } from 'react'
 import { BiArchiveIn, BiArchiveOut } from 'react-icons/bi'
-import { BsArrowLeft, BsFolderSymlinkFill } from 'react-icons/bs'
+import { BsArrowLeft } from 'react-icons/bs'
 import { FaTrash, FaTrashAlt, FaTrashRestore } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import { deleteNoteData, updateNoteData } from '../../backend/controllers/NotesControllers'
@@ -121,7 +121,7 @@ export const NotesHeaderSec = () => {
           <Heading as='h4' size='lg'>{selectedNotes.length} Selected</Heading>
           <Spacer/>
           <Flex alignItems='center' gap='2' mb='2'>
-            {!onTrashPage && <IconButton size='sm' icon={<BsFolderSymlinkFill/>}/>}
+            {/* {!onTrashPage && <IconButton size='sm' icon={<BsFolderSymlinkFill/>}/>} */}
             {!onTrashPage && <IconButton size='sm' icon={onArchivePage ? <BiArchiveOut/> : <BiArchiveIn/>} onClick={handleArchiveAction}/>}
             {onTrashPage && <IconButton size='sm' icon={<FaTrash/>} onClick={handleDelete}/>}
             <IconButton size='sm' icon={onTrashPage ? <FaTrashRestore/> : <FaTrashAlt/>} onClick={handleTrashAction}/>

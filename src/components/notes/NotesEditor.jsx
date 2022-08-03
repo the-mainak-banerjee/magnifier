@@ -54,6 +54,7 @@ export const NotesEditor = () => {
                 width='100%'
                 value={noteContent}
                 onChange={(e) => setNoteContent(e.target.value)}
+                autoFocus
             />
         </Container>
     </Flex>

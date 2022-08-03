@@ -105,6 +105,7 @@ export const NewFolderModal = ({ isOpen, onClose, note }) => {
                 {note.folder?.id
                 ?  <Box as='section'>
                         <Flex direction='column' gap='4'>
+                          
                             <Button fontSize='lg' colorScheme='red' px='4' py='1' borderWidth='1px' borderColor={colorMode=== 'light' ? 'gray.300' : 'gray.700'} borderRadius='lg' onClick={handleRemoveFromFolder}>
                               Remove From {note?.folder?.name}
                             </Button>
@@ -150,9 +151,13 @@ export const NewFolderModal = ({ isOpen, onClose, note }) => {
                             </Container> 
                             : <Flex direction='column' gap='4'>
 
-                                <Text fontSize='lg' cursor='pointer' onClick={() => setShowForm(true)} px='4' py='1' borderWidth='1px' borderColor={colorMode=== 'light' ? 'gray.300' : 'gray.700'} borderRadius='lg'>
+                                {/* <Text fontSize='lg' cursor='pointer' onClick={() => setShowForm(true)} px='4' py='1' borderWidth='1px' borderColor={colorMode=== 'light' ? 'gray.300' : 'gray.700'} borderRadius='lg'>
                                   Create A Folder
-                                </Text>
+                                </Text> */}
+
+                                <Button onClick={() => setShowForm(true)} px='4' py='1' borderWidth='1px' borderColor={colorMode=== 'light' ? 'gray.300' : 'gray.700'} borderRadius='lg' colorScheme='green'>
+                                  Create A Folder
+                                </Button>
 
                                 {allFolders?.length > 0 && <div>
                                   <Select placeholder='Select A Folder' onChange={(e) => setSelectedForm(e.target.value)} fontSize='lg' variant='filled'>
