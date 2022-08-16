@@ -11,7 +11,7 @@ A Productivity App Which Helps You To Maintain A Laser-Like Focus & Be Productiv
 - User can only be able to use all the functionalities after logging in.
 - KIS:- Keep It Simple- This will help you to track the top 5 most important tasks of the day.
 - Pomodoro:- Do focus work by using this Pomodoro timer. You can also track the history of your Pomodoro
-- Notes:- Take quick notes, and organize them in folders. Also, you can achieve or move a note to trash or permanently delete them.
+- Notes:- Take quick notes, and organize them in folders. Also, you can archive or move a note to trash or permanently delete them.
 - Dark mode:- Users can use this web app in dark mode also.
 
 ## Features
