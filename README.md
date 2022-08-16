@@ -66,6 +66,7 @@ A Productivity App Which Helps You To Maintain A Laser-Like Focus & Be Productiv
 - User can add a note to a folder by clicking on the folder icon on a notes card. Either they can create a new folder or select a folder from a list.
 - On the folder page user can see all the folders. And `View` button on the folder card will redirect the user to the notes page where the user can only see the notes inside that folder.
 - User can also edit the name of a folder and delete a folder.
+- You Can also search notes based on their title & description.
 
 ### `Profile`
 
@@ -85,4 +86,31 @@ A Productivity App Which Helps You To Maintain A Laser-Like Focus & Be Productiv
 
 
 ## Screens
+
+### `KIS`
+
+![image](https://user-images.githubusercontent.com/94280354/184859714-94c6a277-45e4-44d0-8cb6-77ae8fff33a7.png)
+
+![image](https://user-images.githubusercontent.com/94280354/184859895-3d062e59-90d2-45f2-bd42-017f4201df21.png)
+
+
+### `Pomodoro`
+
+![image](https://user-images.githubusercontent.com/94280354/184861053-bc262e17-4237-47d3-bcf5-10c707648ebe.png)
+
+![image](https://user-images.githubusercontent.com/94280354/184860048-2af4ef1e-1bae-4eef-8d80-3067ff519513.png)
+
+
+### `Notes`
+
+![image](https://user-images.githubusercontent.com/94280354/184860244-ab9c8662-96fc-41dc-a7b2-17ab9bcb0df3.png)
+
+![image](https://user-images.githubusercontent.com/94280354/184860294-46ab14ac-8bf1-442f-93f7-fa58411181fb.png)
+
+![image](https://user-images.githubusercontent.com/94280354/184860408-13693b0e-0595-4ece-a99b-6b8fc4d942a1.png)
+
+![image](https://user-images.githubusercontent.com/94280354/184860520-87b0d1de-c437-44ab-b4ce-d01b393299a2.png)
+
+
+
 
