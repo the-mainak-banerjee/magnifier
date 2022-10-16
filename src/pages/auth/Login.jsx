@@ -53,6 +53,14 @@ export const Login = () => {
       logIn(formData.email, formData.password)
   }
 
+  const handleGuestLogin = () => {
+    setFormData({
+      email: 'smartwork@gmail.com',
+      password: 'Smart_1999'
+    })
+    logIn('smartwork@gmail.com','Smart_1999')
+  }
+
   const handleShowClick = () => setShowPassword(!showPassword);
 
 
@@ -65,8 +73,6 @@ export const Login = () => {
 
     // eslint-disable-next-line
   },[location.state])
-
-
 
 
   return (
@@ -84,7 +90,7 @@ export const Login = () => {
       >
         <Avatar bg={blueColor} />
         <Heading color={blueColor}>Welcome</Heading>
-        <Text fontSize='lg' textAlign='center' px='4'>Get Back To Your Account And Start Focusing On Your Goal</Text>
+        <Text fontSize='lg' textAlign='center' px='4'>Get back to your account and start focusing on your goal</Text>
         <Box minW={{ base: "90%", md: "468px" }}>
           <form>
             <Stack
@@ -102,12 +108,13 @@ export const Login = () => {
                   <Input 
                   type="email" 
                   placeholder="email address" 
+                  value={formData.email}
                   isInvalid={!isValidEmail && formData.email}
                   errorBorderColor='red.300'
                   onChange={(e) => setFormData(prevState =>({...prevState, email:e.target.value}))}/>
                 </InputGroup>
                 <FormHelperText>
-                  {formData.email && !isValidEmail && <Text color='red.500'>Email is Invalid</Text>}
+                  {formData.email && !isValidEmail && <Text color='red.500'>Email is invalid</Text>}
                 </FormHelperText>
               </FormControl>
               <FormControl>
@@ -119,7 +126,8 @@ export const Login = () => {
                   />
                   <Input
                     type={showPassword ? "text" : "password"}
-                    placeholder="Password"
+                    placeholder="password"
+                    value={formData.password}
                     isInvalid={!isValidPassword && formData.password }
                     errorBorderColor='red.300'
                     onChange={(e) => setFormData(prevState =>({...prevState, password:e.target.value}))}
@@ -131,11 +139,11 @@ export const Login = () => {
                   </InputRightElement>
                 </InputGroup>
                 <FormHelperText>
-                  {formData.password && !isValidPassword && <Text color='red.500'>Password Should be more than 6 character</Text>}
+                  {formData.password && !isValidPassword && <Text color='red.500'>Password should be more than 6 character</Text>}
                 </FormHelperText>
               </FormControl>
+              <Text onClick={handleGuestLogin} cursor='pointer' textAlign='right' color={blueColor} fontSize='lg'>Use guset login</Text>
               <Button
-                borderRadius={0}
                 variant="solid"
                 colorScheme="blue"
                 width="full"
@@ -153,6 +161,12 @@ export const Login = () => {
         New to us?{" "}
         <Link as={ReachLink} to='/' color={blueColor} href="#">
           Sign Up
+        </Link>
+      </Box>
+      <Box>
+        Forgot your password?{" "}
+        <Link as={ReachLink} to='/forgotPassword' color={blueColor} href="#">
+          Reset it here
         </Link>
       </Box>
     </Flex>

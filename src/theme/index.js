@@ -1,4 +1,6 @@
-import { extendTheme, theme as base} from "@chakra-ui/react";
+import { extendTheme } from "@chakra-ui/react";
+import '@fontsource/monda'
+import '@fontsource/roboto'
 
 const config = {
     initialColorMode: 'light',
@@ -7,9 +9,8 @@ const config = {
 
 const theme = extendTheme({
     fonts: {
-        ...base.fonts,
-        heading: `Montserrat`,
-        body: `Inter`
+        heading: `Monda`,
+        body: `Roboto`
     },
     config
 })

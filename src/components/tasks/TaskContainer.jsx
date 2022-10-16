@@ -79,7 +79,6 @@ export const TaskContainer = ({ openTaskModal }) => {
   }
 
 
-
   return (
     <>
       <Container maxW="container.lg" p='0' mt='4'>
@@ -87,19 +86,19 @@ export const TaskContainer = ({ openTaskModal }) => {
         ? <Flex py={{base:'2', md:'5'}} gap='3' direction={{base:'column', lg:'row'}}>
             <TaskBox 
               title='Active Task' 
-              fallBackText = 'You Have No Active Task. If You Have Completed All Task Of The Day then Please Click On "Day Ended" Button. Or Add Some Task And Start Focusing Now.🎯'
+              fallBackText = 'You have no active task. If you have completed all task of the day then please click on "Day Ended" button. Or add some task and start Focusing Now.🎯'
               tasks={activeTask}
               borderColor={colorMode === 'light' ? 'blue.300'  : 'blue.600'}/>
             <TaskBox 
               title='Completed Task' 
-              fallBackText="You Haven't Completed Any Task Yet. Keep Working.💪"
+              fallBackText="You haven't completed any task yet. Keep Working.💪"
               tasks={completedTask}
               borderColor={colorMode === 'light' ? 'green.500'  : 'green.300'}/>
           </Flex>
         : <VStack h='30vh' justify='center'>
             {kisDataLoading 
             ? <Text fontSize={{base:'xl', md:'2xl'}} textAlign='center'>Loading...</Text>
-            : <Text fontSize={{base:'xl', md:'2xl'}} textAlign='center'>{accountDetails?.name} Add Your KIS for Today</Text>}
+            : <Text fontSize={{base:'xl', md:'2xl'}} textAlign='center'>{accountDetails?.name} add your KIS for today</Text>}
             {!kisDataLoading && <Button w='60' onClick={openTaskModal} colorScheme='blue'>Add KIS</Button>}
           </VStack>  
       }
@@ -110,7 +109,7 @@ export const TaskContainer = ({ openTaskModal }) => {
 
       {kisOfTheDay?.length > 0 && !showDateEndDetails && <Container maxW="container.lg" p='0' my='4'>
         <Flex align='center' direction={{base:'column', lg:'row'}} gap='2'>
-          <Text fontSize={{base:'xl', md:'2xl'}}>{`Compleion Rate: ${Math.floor((completedTask?.length / kisOfTheDay?.length) * 100)}%`}</Text>
+          <Text fontSize={{base:'xl', md:'2xl'}}>{`Completion Rate: ${Math.floor((completedTask?.length / kisOfTheDay?.length) * 100)}%`}</Text>
           <Spacer/>
           <ButtonGroup>
             <Button onClick={openTaskModal} colorScheme='blue'>{kisOfTheDay?.length === 5 ? 'Edit KIS Taks' : 'Add More Tasks'}</Button>
@@ -125,7 +124,7 @@ export const TaskContainer = ({ openTaskModal }) => {
           <Text fontWeight='bold' fontSize='xl' color={colorMode === 'light' ? 'red' : 'red.300'}>Select The Date You Are Ending.</Text>
           {/* <DatePicker onChange={onChange} value={dateValue} className="react-datapicker__input-text"/> */}
           <Input type='date' onChange={(e) => setDateValue(e.target.value)}/>
-          <Text fontSize='lg' textAlign='center'>{hasErrorInDayEnd ? 'You Are Ending The Same Day Multiple Times. Please Change The Date First And Then End The Day.' : `Are You Sure You Want To End The Day - ${dateValue}? You can't undo this action afterwards.`} </Text>
+          <Text fontSize='lg' textAlign='center'>{hasErrorInDayEnd ? 'You are ending the same day multiple times. Please change the date first and then end the day.' : `Are you sure you want to End The Day - ${dateValue}? You can't undo this action afterwards.`} </Text>
           <ButtonGroup>
               <Button onClick={() => setShowDateEndDetails(false)} mr='2'>Cancel</Button>
               <Button 

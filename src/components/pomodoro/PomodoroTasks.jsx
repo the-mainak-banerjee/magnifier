@@ -1,4 +1,4 @@
-import { Badge, Button, Container, Flex, Heading, HStack, IconButton, Input, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr, useColorMode, VStack} from '@chakra-ui/react'
+import { Badge, Button, Container, Flex, Heading, HStack, IconButton, Input, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr, useColorMode, useToast, VStack} from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { useAuth, useKis, usePomo } from '../../context'
 import { v4 as uuid } from 'uuid'
@@ -35,6 +35,8 @@ export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
 
     const { colorMode } = useColorMode()
     const completedTaskBgColor = colorMode === 'light' ? 'green.300'  : 'green.600'
+
+    const toast = useToast()
 
     useEffect(() => {
         setKisTaskData(kisOfTheDay?.filter(task=>!task.completed && !allPomodoroTask.some(data => data.id === task.id)))
@@ -154,6 +156,12 @@ export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
             updateUser(user.uid,{pomoDoroTask: {...pomodoroTask, name: editableTask.name}})
         }
 
+        toast({
+            title:'Task edited successfully',
+            status: 'success',
+            position: 'bottom-left'
+        })
+
         setIsEditing(prevState => !prevState)
     }
     
@@ -170,8 +178,6 @@ export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
         setReset(prevState => !prevState)
         pomoContainerRef.current.scrollIntoView()
     }
-
-
       
 
   return (
@@ -179,22 +185,23 @@ export const PomodoroTasks = ({ pomoContainerRef,addTaskRef }) => {
         {(reset || !pomodoroTask?.name) && <Container maxW="container.lg" p='4' my='4' boxShadow='md'>
             <Flex align='center' direction='column' gap='2' ref={addTaskRef}>
                 {isEditing 
-                ? <Input placeholder='Add A Task' value={editableTask.name} onChange={(e) => setEditableTask(prevData => ({...prevData, name:e.target.value}))}/>
+                ? <Input placeholder='Add a task' value={editableTask.name} onChange={(e) => setEditableTask(prevData => ({...prevData, name:e.target.value}))}/>
                 : <Flex flexDirection='column' alignItems='center' w='full'>    
                     <Heading as='h4' size='md' mb='2'>Add Tasks To Focus On</Heading> 
-                    <Input placeholder='Add A Task' value={formData.name} onChange={(e) => setFormData({name:e.target.value, taskType:'POMO', usedPomodoroNo: 0,  id: uuid()})} isDisabled={kisFormData.name}/>
+                    <Input placeholder='Add a task' value={formData.name} onChange={(e) => setFormData({name:e.target.value, taskType:'POMO', usedPomodoroNo: 0,  id: uuid()})} isDisabled={kisFormData.name}/>
                 </Flex>
                 }
 
-                {(!isEditing && kisTaskData?.length>0) && <VStack w='full'>
+                {(!isEditing && kisTaskData?.length>0 && formData.name?.length === 0) && <VStack w='full'>
                         <Heading as='h5' size='md'>Or</Heading> 
                         <Flex flexDirection='column' alignItems='center' w='full'>    
                             <Heading as='h4' size='md' mb='2'>Select A Task From KIS</Heading> 
                             {kisTaskData.map(item => {
                                 return(
-                                    <HStack key={item.id} border='2px' borderColor={colorMode === 'light' ? 'blue.300'  : 'blue.600'} borderRadius='lg' w='full' px='2' py='1' mb='2'>
-                                        <input type='radio' name='KISTASK' value={item.id} checked={kisFormData.id === item.id} onChange={handleKisSelection}/>
-                                        <Text>{item.name}</Text>
+                                    <HStack key={item.id} w='full' px='4' py='1' mb='2'>   
+                                        <input id={item.id} type='radio' name='KISTASK' value={item.id} checked={kisFormData.id === item.id} onChange={handleKisSelection}/>
+                                        <label htmlFor={item.id}>{item.name}</label>
+                                        
                                     </HStack>
                                 )
                             })} 

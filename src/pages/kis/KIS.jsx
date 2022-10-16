@@ -21,7 +21,7 @@ const KIS = () => {
               <Flex pb='2' align='center' gap={{base:'2', md:'0'}} direction={{base:'column', md:'row'}}>
                 <Box textAlign={{base:'center',md:'left'}}>
                   <Heading as='h3' size='xl'>KIS- Keep It Simple</Heading>
-                  <Text fontSize='lg' pt='1'>Your Top 3 to 5 Important and Urgent Task Of The Day.</Text>
+                  <Text fontSize='lg' pt='1'>Your top 3 to 5 important and urgent task of the day.</Text>
                 </Box>
                 <Spacer/>
                 {/* <Button colorScheme='gray'>Show Details</Button> */}

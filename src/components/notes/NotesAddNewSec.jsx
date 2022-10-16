@@ -46,7 +46,7 @@ export const NotesAddNewSec = () => {
     <Container maxW="container.sm" px='4' py='2' my='10' borderWidth='1px' borderColor={colorMode=== 'light' ? 'gray.800' : 'gray.200'} borderRadius='lg' boxShadow={showForm ? 'xl' : ''}>
       {showForm 
       ? <Flex direction='column' gap='4'>
-          <Input placeholder='Give Your Note A Title' onChange={(e) => setTitleFormData({id: uuid(), title:e.target.value})} variant='flushed' autoFocus/>
+          <Input placeholder='Give your note a title' onChange={(e) => setTitleFormData({id: uuid(), title:e.target.value})} variant='flushed' autoFocus/>
 
           <ButtonGroup alignSelf='flex-end'>
             <Button onClick={createNote} colorScheme='blue' isLoading={loading} loadingText='Creating...'>Create Note</Button>
@@ -54,7 +54,7 @@ export const NotesAddNewSec = () => {
           </ButtonGroup>
 
         </Flex>
-      : <Text fontSize='lg' cursor='pointer' onClick={() => setShowForm(true)}>Take A Note...</Text>
+      : <Text fontSize='lg' cursor='pointer' onClick={() => setShowForm(true)}>Take a note...</Text>
       }
     </Container>
   )

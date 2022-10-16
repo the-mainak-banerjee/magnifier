@@ -61,7 +61,7 @@ export const AddTaskModal = ({ isOpen, onClose }) => {
               </Flex>
             </FormControl>
             :   <Center>
-                    <Text w='80%' fontSize='lg' textAlign='center'>You Have Added Maximum Tasks For The Day. Now Let's Start Working.🎯</Text>
+                    <Text w='80%' fontSize='lg' textAlign='center'>You have added maximum tasks for the day. Now let's start working.🎯</Text>
                 </Center> 
             }
             <VStack pt='8'>
