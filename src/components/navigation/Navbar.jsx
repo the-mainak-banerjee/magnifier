@@ -1,10 +1,10 @@
 import { Box, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerOverlay, Flex, Heading, IconButton, Link, Spacer, useColorMode } from '@chakra-ui/react'
 import React from 'react'
-import { BsList, BsFillMoonFill, BsSun, BsFillQuestionCircleFill } from 'react-icons/bs'
+import { BsList, BsFillMoonFill, BsSun } from 'react-icons/bs'
+import { FaUserAlt } from 'react-icons/fa'
 import { useDisclosure } from '@chakra-ui/react'
 import NavItems from './NavItems'
 import { Link as ReachLink } from 'react-router-dom'
-import { FaUserAlt } from 'react-icons/fa'
 import { useAuth } from '../../context'
 
 
@@ -51,15 +51,15 @@ export const Navbar = () => {
                 pr='4'
             />
           </Link>}
-          <Link href='https://github.com/the-mainak-banerjee/magnifier/blob/main/README.md' target='_blank'>
+          {/* <Link href='https://github.com/the-mainak-banerjee/magnifier/blob/main/README.md' target='_blank'>
             <IconButton 
                 aria-label='Read The Docs'
                 variant='unstyle'
                 size='xl'
-                icon={<BsFillQuestionCircleFill/>}
+                icon={<BsFillFileEarmarkTextFill/>}
                 marginBottom='1'
             />
-          </Link>
+          </Link> */}
         </Flex>
       </Flex>
       {/* <Show breakpoint='(max-width: 760px)'> */}
