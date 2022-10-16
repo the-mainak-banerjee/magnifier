@@ -24,7 +24,7 @@ const Notes = () => {
                   }
                 </Container>
                 {pinnedNotes.length>0 && <NotesPinnedSec/>}
-                {(pinnedNotes?.length > 0 && unPinnedNotes?.length > 0)  && <Text fontSize='md' fontWeight='semiBold' ml={{base: '6', lg:'36'}}>OTHERS</Text>}
+                {/* {(pinnedNotes?.length > 0 && unPinnedNotes?.length > 0)  && <Text fontSize='md' fontWeight='semiBold' ml={{base: '6', lg:'36'}}>OTHERS</Text>} */}
                 {othersNote?.length > 0
                 ? <NotesContainer notes={unPinnedNotes}/>
                 : <Flex flexDirection='column' h='50vh' alignItems='center' justifyContent='center'>
