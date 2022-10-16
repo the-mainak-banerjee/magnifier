@@ -18,7 +18,7 @@ const PomodoroContextProvider = ( { children }) => {
 
     const [timerType, setTimerType] = useState({
         focus: 25,
-        shortBreak: 1,
+        shortBreak: 5,
         longBreak: 60
     })
     const [sec,setSec] = useState(0)

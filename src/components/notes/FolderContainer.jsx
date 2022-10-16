@@ -26,7 +26,7 @@ export const FolderContainer = () => {
         ) : (
           <Flex flexDirection='column' h='50vh' alignItems='center' justifyContent='center'>
               <Icon as={AiOutlineFolderOpen} w='20' h='20' color={colorMode === 'light' ? 'gray.200' : 'gray.700'}/>
-              <Text color='gray.500'>Your Archieved Notes Apppear Here</Text>
+              <Text color='gray.500' fontSize='lg'>Your folders will apppear here</Text>
           </Flex>
         )
         }

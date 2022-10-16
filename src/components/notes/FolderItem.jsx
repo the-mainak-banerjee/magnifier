@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useNotes } from '../../context'
 import { BsFillPenFill } from 'react-icons/bs'
 import { FaTrash } from 'react-icons/fa'
-import { deleteNoteData } from '../../backend/controllers/NotesControllers'
+import { updateNoteData } from '../../backend/controllers/NotesControllers'
 import { deleteFolder, updateFolderData } from '../../backend/controllers/FolderControllers'
 import { useAuth } from '../../context'
 
@@ -14,8 +14,9 @@ export const FolderItem = ({ folder }) => {
     const { colorMode } = useColorMode()
     const navigate = useNavigate()
     const { user } = useAuth()
-    const { trashedNotes } = useNotes()
+    const { trashedNotes, archivedNotes } = useNotes()
     const [trashedNotesNumber,setTrashedNotesNumber] = useState()
+    const [archievedNotesNumber, setArchievedNotesNumber] = useState()
     const [showForm,setShowForm] = useState(false)
     const [formData, setFormData] = useState(folder.name)
     const toast = useToast()
@@ -24,7 +25,8 @@ export const FolderItem = ({ folder }) => {
      // Cheked Trashed Notes Number In A Folder
      useEffect(() => {
         setTrashedNotesNumber(folder.notes?.filter(item => trashedNotes.some(note => note.id===item)).length)
-    },[folder,trashedNotes])
+        setArchievedNotesNumber(folder.notes?.filter(item => archivedNotes.some(note => note.id === item)).length)
+    },[folder,trashedNotes,archivedNotes])
 
 
 
@@ -52,17 +54,30 @@ export const FolderItem = ({ folder }) => {
         updateFolderData(user,folder.id,{name: formData})
         setShowForm(false)
         showToast('Folder Edited Successfully')
+
+        // Update the folder name in all notes of the folder
+        folder.notes?.forEach(item => {
+            updateNoteData(user,item,{folder: {name:formData,id:folder.id}})
+            // console.log(item)
+        })
     }
 
     // Delete a folder
     const handleFolderDelete = (folder) => {
-        deleteFolder(user,folder.id)
-
+        
         // Move all notes of the folder to Trash
         folder.notes?.forEach(item => {
-            deleteNoteData(user,item)
+            // deleteNoteData(user,item)
+            const data = {
+                isPinned: false,
+                isTrashed: true,
+                folder: {}
+            }
+            updateNoteData(user,item,data)
+            console.log(item)
         })
-
+        
+        deleteFolder(user,folder.id)
         showToast('Folder Deleted Successfully')
     }
 
@@ -85,7 +100,7 @@ export const FolderItem = ({ folder }) => {
             </Flex>
         )}
 
-        {!showForm && <Text fontSize='md'>Total Notes:- {folder.notes?.length - trashedNotesNumber}</Text>}
+        {!showForm && <Text fontSize='md'>Total Notes:- {folder.notes?.length - (trashedNotesNumber + archievedNotesNumber)}</Text>}
 
 
         <Flex alignItems='center' gap='2' mb='2'mt='8' position='absolute' bottom='2' right='2'>
@@ -93,7 +108,7 @@ export const FolderItem = ({ folder }) => {
 
             <IconButton size='sm' icon={<FaTrash/>}  onClick={() => handleFolderDelete(folder)}/>
 
-            <Button size='sm' onClick={() => handleFolderView(folder)}>View</Button>
+            <Button size='sm' onClick={() => handleFolderView(folder)} colorScheme='blue'>View</Button>
         </Flex>
 
     </Container>

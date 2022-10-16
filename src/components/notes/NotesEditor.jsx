@@ -1,4 +1,4 @@
-import { Container, Flex, IconButton, Input, Spacer, Text, Textarea } from '@chakra-ui/react'
+import { Container, Flex, IconButton, Input, Spacer, Text, Textarea, useColorMode } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { BsArrowLeft } from 'react-icons/bs'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -13,6 +13,8 @@ export const NotesEditor = () => {
     const [noteTitle,setNoteTitle] = useState('')
     const [noteContent,setNoteContent] = useState('')
     const navigate = useNavigate()
+    const { colorMode } = useColorMode()
+
 
     useEffect(() => {
         const unSub = getNoteData(user,params.notesId,setNoteTitle,setNoteContent)
@@ -46,7 +48,7 @@ export const NotesEditor = () => {
                 variant='flushed' 
                 fontSize='2xl' w='60%' ml='4'/>
             <Spacer/>
-            <Text>{loading ? 'Saving...' : 'Saved'}</Text>
+            <Text color={colorMode === 'light' ? 'blue.300'  : 'blue.600'} fontSize='xl'>{loading ? 'Saving...' : 'Saved'}</Text>
         </Flex>
         <Container my='8'>
             <Textarea

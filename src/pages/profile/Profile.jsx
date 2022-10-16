@@ -2,7 +2,7 @@ import { Container, Flex, Heading, Text, Divider, Button, TableContainer, Tbody,
 import React, { useEffect, useState } from 'react'
 import { BodyWrapper, Sidebar } from '../../components'
 import { useAuth, useNotes, usePomo } from '../../context'
-import DatePicker from 'react-date-picker'
+// import DatePicker from 'react-date-picker'
 import { getPerDayPomoData } from '../../backend/controllers/PomodoroControllers'
 import useActiveUser from '../../hooks/useActiveUser'
 import { updateUser } from '../../backend/controllers/UserControllers'
@@ -15,13 +15,14 @@ const Profile = () => {
     const { othersNote, archivedNotes, trashedNotes } = useNotes()
     const { colorMode } = useColorMode()
     const toast = useToast()
-    const [dateValue, onChange] = useState(new Date())
+    // const [dateValue, onChange] = useState(new Date())
     const [pomodoroTasks,setPomodoroTask] = useState(todaysPomodoroTasks)
     const [pomoDetails,setPomoDetails] = useState(totalPomo)
     const [showEditForm,setShowEditForm] = useState(false)
     const [loading,setLoading] = useState(false)
     const [formData,setFormData] = useState('')
-
+    const [dateInput,setDateInput] = useState('')
+    const [newDate,setNewDate] = useState(new Date())
 
     const completedTaskBgColor = colorMode === 'light' ? 'green.300'  : 'green.600'
 
@@ -42,15 +43,19 @@ const Profile = () => {
     }
 
     useEffect(() => {
-      setPomodoroTask(allPomodoroTask.filter(item => item.date === dateValue.toDateString()))
-    }, [allPomodoroTask,dateValue])
+      setPomodoroTask(allPomodoroTask.filter(item => item.date === newDate.toDateString()))
+    }, [allPomodoroTask,newDate])
 
     useEffect(() => {
-      getPerDayPomoData(user,dateValue.toDateString(),setPomoDetails)
-    },[dateValue,user])
+      getPerDayPomoData(user,newDate.toDateString(),setPomoDetails)
+    },[newDate,user])
 
-
-
+    useEffect(() => {
+      if(dateInput){
+        const date = new Date(dateInput)
+        setNewDate(date)
+      }
+    }, [dateInput])
 
 
   return (
@@ -59,7 +64,7 @@ const Profile = () => {
         <BodyWrapper> 
             <Container maxW="container.lg" p='0' mb='4'>
                 <Heading as='h3' size='xl'>Profile</Heading>
-                <Text>Hi {accountDetails?.name}! Here Is Your Proile Details.</Text>
+                <Text>Hi {accountDetails?.name}! here is your proile details.</Text>
             </Container>  
             <Divider/>  
             {!showEditForm 
@@ -78,7 +83,7 @@ const Profile = () => {
               </Container>
             ) : (
               <Container maxW='container.lg' p='2' my='8'>
-                  <Input type='text' placeholder='Add New Name' value={formData} onChange={(e) => setFormData(e.target.value)} />
+                  <Input type='text' placeholder='Add new name' value={formData} onChange={(e) => setFormData(e.target.value)} />
                   <ButtonGroup marginTop='4'>
                     <Button colorScheme='blue' disabled={!formData || loading} onClick={nameChangeHandler}>Save</Button>
                     <Button colorScheme='red' onClick={() => setShowEditForm(false)}>Cancel</Button>
@@ -93,10 +98,11 @@ const Profile = () => {
               <Flex alignItems='center' mb='4'>
                 <Heading as='h4' size='md' mb='4'>Pomodoro Details:-</Heading>
                 <Spacer/>
-                <DatePicker width='330px' onChange={onChange} value={dateValue}/>
+                {/* <DatePicker width='330px' onChange={onChange} value={dateValue}/> */}
+                <Input type='date' flex='1' value={dateInput} onChange={(e) => setDateInput(e.target.value)}/>
               </Flex>
               <Flex justifyContent='space-between' mb='4' flexDirection={{base:'column', lg:'row'}}>
-                <Text>Date:{dateValue.toLocaleDateString()} </Text>
+                <Text>Date:{newDate.toLocaleDateString()} </Text>
                 <Text>Total Pomodoro: { `25mins: ${pomoDetails?.short ?? 0}, 35mins: ${pomoDetails?.long ?? 0}`} </Text>
                 <Text>Total Pomodoro Tasks: {pomodoroTasks?.length} </Text>
               </Flex>

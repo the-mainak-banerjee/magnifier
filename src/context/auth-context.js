@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut,  } from 'firebase/auth'
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signOut,  } from 'firebase/auth'
 import { auth } from '../backend/Firebase'
 import { createUser } from "../backend/controllers/UserControllers"
 import { useToast } from "@chakra-ui/react"
@@ -106,6 +106,28 @@ const AuthContextProvider = ({ children }) => {
         }
     }
 
+    // Forgot Password Handler
+
+    const forgotPassword = async (email) => {
+        setLoading(true)
+        try{
+            await sendPasswordResetEmail(auth, email, { url: "https://the-magnifier.netlify.app/login" });
+            toast({
+                title: 'Password Reset Email Send',
+                status: 'success'
+            })
+            navigate('/login')
+        }catch(error){
+            toast({
+                title: 'An error occured.',
+                status: 'error'
+            })
+            console.log(error)
+        }finally{
+            setLoading(false)
+        }
+    }
+
 
 
     // Get Currently Signedin User
@@ -125,7 +147,7 @@ const AuthContextProvider = ({ children }) => {
 
 
     return (
-        <AuthContext.Provider value={{ signUp,logIn,logOut,user,loading,userTocken }}>
+        <AuthContext.Provider value={{ signUp,logIn,logOut,forgotPassword,user,loading,userTocken }}>
             { children }
         </AuthContext.Provider>
     )

@@ -47,7 +47,7 @@ export const NotesItem = ({ note }) => {
         // notesDispatch({type: 'PIN', id:note.id})
         const data = {
             isPinned: !note.isPinned,
-            isArchived: note.isArchived && !note.isArchived
+            // isArchived: note.isArchived && !note.isArchived
         }
         updateNoteData(user,note.id,data)
     }
@@ -128,12 +128,12 @@ export const NotesItem = ({ note }) => {
         
         {(actionsVisibility || note.isSelected) && <IconButton size='md' variant='unstyled' icon={<BsCheckCircleFill/>} position='absolute' top='-4' left='-2' onClick={handleSelectAction}/>}
 
-        {(actionsVisibility && !selectState) && !onTrashPage && <IconButton size='md' variant='unstyled' icon={note.isPinned ? <BsFillPinFill/> : <BsPin/>} position='absolute' top='2' right='0' onClick={handlePinAction}/>}
+        {(actionsVisibility && !selectState) && !onTrashPage && !onArchivePage && <IconButton size='md' variant='unstyled' icon={note.isPinned ? <BsFillPinFill/> : <BsPin/>} position='absolute' top='2' right='0' onClick={handlePinAction}/>}
 
 
         <Text fontSize='md' w='85%'>{trunCateString(note)}</Text>
 
-        {(!actionsVisibility && !selectState) && <Text position='absolute' bottom='2' right='2'>Created At:{note.date} </Text>}
+        {(!actionsVisibility && !selectState) && <Text position='absolute' bottom='2' right='2'>Created at:{note.date} </Text>}
         {(!actionsVisibility && !selectState && !onTrashPage) && <Badge colorScheme='blue' position='absolute' top='2' right='2'>{note.folder?.name} </Badge>}
 
         {(actionsVisibility && !selectState) && <Flex alignItems='center' gap='2' mb='2'mt='8' position='absolute' bottom='2' right='2'>

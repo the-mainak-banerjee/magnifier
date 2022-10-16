@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Center, Circle, Container, Flex, Heading, IconButton, Text, useColorMode,  VStack } from '@chakra-ui/react'
+import { Button, ButtonGroup, Center, Circle, Container, Flex, Heading, IconButton, Text, useColorMode,  useToast,  VStack } from '@chakra-ui/react'
 import React, { useCallback, useState } from 'react'
 import { BsFillCaretRightFill, BsFillGearFill } from 'react-icons/bs'
 import { AiFillPauseCircle } from 'react-icons/ai'
@@ -14,6 +14,7 @@ export const PomodoroContainer = ({ pomoContainerRef,addTaskRef }) => {
     const { focus,startFocus,shortBreak,startShortBreak, longBreak, startLongBreak, pause,setPause,reset,setReset, pomoSec, pomoMin, pomodoroTask, totalPomo } = usePomo()
     // const {dispatch : kisDispatch} = useKis()
     const { user } = useAuth()
+    const toast = useToast()
 
 
     const handleReset = () => {
@@ -45,6 +46,12 @@ export const PomodoroContainer = ({ pomoContainerRef,addTaskRef }) => {
             updateData(user,'KISTask', pomodoroTask?.id, updatedData)
         }
 
+        toast({
+            title:'Task marked as complete',
+            status: 'success',
+            position: 'bottom-left'
+        })
+
         handleReset()
     }
 
@@ -73,7 +80,7 @@ export const PomodoroContainer = ({ pomoContainerRef,addTaskRef }) => {
             {focus && <Center w={{base:'100%', lg:'40%'}} py='2' backdropFilter='invert(10%)' border='2px' borderRadius='xl' borderColor={colorMode === 'light' ? 'blue.300'  : 'blue.600'}>
                 {pomodoroTask?.name 
                 ? <VStack>
-                    <Text textAlign='center' fontSize='lg'>Focusing On:- "{pomodoroTask?.name}"</Text>
+                    <Text textAlign='center' fontSize='lg'>Focusing on:- "{pomodoroTask?.name}"</Text>
                     <Button onClick={handleComplete} size='sm'>Mark As Complete</Button>
                 </VStack>
                 : <Text cursor='pointer' onClick={() => addTaskRef.current.scrollIntoView()}>Let's Add A Task</Text>

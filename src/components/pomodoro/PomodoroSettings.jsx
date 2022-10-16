@@ -15,8 +15,6 @@ export const PomodoroSettings = ({ hanleSettingVisibility }) => {
         hanleSettingVisibility()
     }   
 
-    console.log(formData)
-
   return (
     <>
         <VStack w='50%'>

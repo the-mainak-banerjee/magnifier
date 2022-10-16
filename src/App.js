@@ -6,6 +6,7 @@ import { Signup } from './pages/auth/Signup';
 import { Login } from './pages/auth/Login';
 import Loading from './pages/falllback/Loading';
 import FourOFourPage from './pages/fourofour/FourOFourPage';
+import ForgotPassword from './pages/auth/ForgotPassword';
 
 const KIS = lazy(() => import('./pages/kis/KIS'))
 const Pomodoro = lazy(() => import('./pages/pomodoro/Pomodoro'))
@@ -23,6 +24,7 @@ function App() {
           <Route element={<RestrictedRoute/>}>
             <Route path='/' element={<Signup/>}/>
             <Route path='/login' element={<Login/>}/>
+            <Route path='/forgotPassword' element={<ForgotPassword/>}/>
           </Route>
           <Route element={<PrivateRoute/>}>
             <Route path='/kis' element={<KIS/>}/>

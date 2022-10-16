@@ -70,7 +70,7 @@ export const Signup = () => {
       >
         <Avatar bg={blueColor} />
         <Heading color={blueColor}>Create Account</Heading>
-        <Text fontSize='lg' textAlign='center' px='4'> Join Magnifier To Maintain A Laser Like Focus &#38; Be Productive </Text>
+        <Text fontSize='lg' textAlign='center' px='4'> Join magnifier to maintain a laser like focus &#38; be productive </Text>
         <Box minW={{ base: "90%", md: "468px" }}>
           <form>
             <Stack
@@ -107,7 +107,7 @@ export const Signup = () => {
                   onChange={(e) => setFormData(prevState =>({...prevState, email:e.target.value}))}/>
                 </InputGroup>
                 <FormHelperText>
-                  {formData.email && !isValidEmail && <Text color='red.500'>Email is Invalid</Text>}
+                  {formData.email && !isValidEmail && <Text color='red.500'>Email is invalid</Text>}
                 </FormHelperText>
               </FormControl>
               <FormControl>
@@ -119,7 +119,7 @@ export const Signup = () => {
                   />
                   <Input
                     type={showPassword ? "text" : "password"}
-                    placeholder="Password"
+                    placeholder="password"
                     isInvalid={!isValidPassword && formData.password }
                     errorBorderColor='red.300'
                     onChange={(e) => setFormData(prevState =>({...prevState, password:e.target.value}))}
@@ -131,7 +131,7 @@ export const Signup = () => {
                   </InputRightElement>
                 </InputGroup>
                 <FormHelperText>
-                  {formData.password && !isValidPassword && <Text color='red.500'>Password Should be more than 6 character</Text>}
+                  {formData.password && !isValidPassword && <Text color='red.500'>Password should be more than 6 character</Text>}
                 </FormHelperText>
               </FormControl>
               <Button
@@ -150,7 +150,7 @@ export const Signup = () => {
         </Box>
       </Stack>
       <Box>
-        Already Have An Account?{" "}
+        Already have an account?{" "}
         <Link as={ReachLink} to='/login' color={blueColor} href="#">
           Log In
         </Link>
