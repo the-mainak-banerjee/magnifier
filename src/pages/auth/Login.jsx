@@ -142,7 +142,7 @@ export const Login = () => {
                   {formData.password && !isValidPassword && <Text color='red.500'>Password should be more than 6 character</Text>}
                 </FormHelperText>
               </FormControl>
-              <Text onClick={handleGuestLogin} cursor='pointer' textAlign='right' color={blueColor} fontSize='lg'>Use guset login</Text>
+              <Text onClick={handleGuestLogin} cursor='pointer' textAlign='right' color={blueColor} fontSize='lg'>Use guest login</Text>
               <Button
                 variant="solid"
                 colorScheme="blue"
